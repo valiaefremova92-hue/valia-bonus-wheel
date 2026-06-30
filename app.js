@@ -14,117 +14,130 @@ let currentRotation = 0;
 let lastPrizeIndex = null;
 
 const prizes = [
-    {
-        title: "500 грн",
-        subtitle: "на Telegram-бот",
-        code: "bonus_1"
-    },
-    {
-        title: "-15%",
-        subtitle: "на перший бот",
-        code: "bonus_2"
-    },
-    {
-        title: "-10%",
-        subtitle: "на будь-яку послугу",
-        code: "bonus_3"
-    },
-    {
-        title: "Instagram тригер",
-        subtitle: "у подарунок",
-        code: "bonus_4"
-    },
-    {
-        title: "Вітальне повідомлення",
-        subtitle: "безкоштовно",
-        code: "bonus_5"
-    },
-    {
-        title: "Супровід 1 місяць",
-        subtitle: "після запуску",
-        code: "bonus_6"
-    },
-    {
-        title: "Тригер на сторіс",
-        subtitle: "у подарунок",
-        code: "bonus_7"
-    }
+{
+title:"500 грн",
+subtitle:"на Telegram-бот",
+code:"bonus_1"
+},
+{
+title:"-15%",
+subtitle:"на перший бот",
+code:"bonus_2"
+},
+{
+title:"-10%",
+subtitle:"на будь-яку послугу",
+code:"bonus_3"
+},
+{
+title:"Instagram тригер",
+subtitle:"у подарунок",
+code:"bonus_4"
+},
+{
+title:"Вітальне повідомлення",
+subtitle:"безкоштовно",
+code:"bonus_5"
+},
+{
+title:"Супровід 1 місяць",
+subtitle:"після запуску",
+code:"bonus_6"
+},
+{
+title:"Тригер на сторіс",
+subtitle:"у подарунок",
+code:"bonus_7"
+}
 ];
 
 spinBtn.addEventListener("click", spinWheel);
 
-function spinWheel() {
-    if (spinning) return;
+function spinWheel(){
 
-    spinning = true;
+if(spinning) return;
 
-    statusText.innerText = "🎁 Перевіряємо ваш бонус...";
+spinning = true;
 
-    const prizeIndex = Math.floor(
-        Math.random() * prizes.length
-    );
+statusText.innerText = "🎁 Перевіряємо ваш бонус...";
 
-    lastPrizeIndex = prizeIndex;
+const prizeIndex =
+Math.floor(Math.random()*prizes.length);
 
-    const sectorAngle = 360 / prizes.length;
-    const extraSpins = 360 * 6;
-    const stopAngle = prizeIndex * sectorAngle;
+lastPrizeIndex = prizeIndex;
 
-    currentRotation += extraSpins + stopAngle;
+const sectorAngle = 360 / prizes.length;
+const extraSpins = 360 * 6;
+const stopAngle = prizeIndex * sectorAngle;
+
+currentRotation += extraSpins + stopAngle;
 
 spinSound.currentTime = 0;
 
-spinSound.play().catch(() => {
-    console.log("sound blocked");
-});
-   winSound.currentTime = 0;
-
-winSound.play().catch(() => {
-    console.log("sound blocked");
+spinSound.play().catch(()=>{
+console.log("sound blocked");
 });
 
-    wheel.style.transform = `rotate(-${currentRotation}deg)`;
+wheel.style.transform =
+`rotate(-${currentRotation}deg)`;
 
-    setTimeout(() => {
+setTimeout(()=>{
 
-        spinSound.pause();
+spinSound.pause();
 
-        const prize = prizes[prizeIndex];
+const prize = prizes[prizeIndex];
 
-        rewardTitle.innerText = "🎉 Ви виграли!";
-        rewardSubtitle.innerText =
-            `${prize.title} ${prize.subtitle}`;
+rewardTitle.innerText = "🎉 Ви виграли!";
+rewardSubtitle.innerText =
+`${prize.title} ${prize.subtitle}`;
 
-        overlay.classList.remove("hidden");
+overlay.classList.remove("hidden");
 
-        winSound.currentTime = 0;
-        winSound.play();
+winSound.currentTime = 0;
 
-        confetti({
-            particleCount: 180,
-            spread: 100,
-            origin: { y: 0.6 }
-        });
+winSound.play().catch(()=>{
+console.log("sound blocked");
+});
 
-        statusText.innerText = "🎉 Бонус готовий";
+confetti({
+particleCount:180,
+spread:100,
+origin:{y:0.6}
+});
 
-        spinning = false;
+statusText.innerText = "🎉 Бонус готовий";
 
-    }, 6000);
+spinning = false;
+
+},6000);
+
 }
 
-claimBtn.addEventListener("click", () => {
+claimBtn.addEventListener("click", async ()=>{
 
-    overlay.classList.add("hidden");
+overlay.classList.add("hidden");
 
-    if (lastPrizeIndex === null) return;
+if(lastPrizeIndex === null) return;
 
-    const selectedPrize =
-        prizes[lastPrizeIndex];
+const selectedPrize =
+prizes[lastPrizeIndex];
 
-    const scriptUrl =
-        "https://https://script.google.com/macros/s/AKfycbwBh-ZbWIlVAsnDvXDDrDfVVhfR9J1zvK4aTMbbUZ8mt7pyF4rES478H0otCoZ9f7PWOw/exec";
+const scriptUrl =
+"https://script.google.com/macros/s/AKfycbwBh-ZbWIlVAsnDvXDDrDfVVhfR9J1zvK4aTMbbUZ8mt7pyF4rES478H0otCoZ9f7PWOw/exec";
 
-    window.location.href =
-        `${scriptUrl}?bonus=${selectedPrize.code}`;
+try{
+
+await fetch(
+`${scriptUrl}?bonus=${selectedPrize.code}`
+);
+
+window.location.href =
+"https://t.me/valia_botmaker_bot";
+
+}catch(error){
+
+console.log(error);
+
+}
+
 });
