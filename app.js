@@ -115,7 +115,7 @@ claimBtn.addEventListener("click", () => {
         prizes[lastPrizeIndex];
 
     const scriptUrl =
-        "https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbxmngNQgTeRPOETH2TGLdeVvDr4encqGl_sWh94RhXz6RrhO8d925fUWuS8P3-_KX8duA/exec";
+        "https://https://script.google.com/macros/s/AKfycbwBh-ZbWIlVAsnDvXDDrDfVVhfR9J1zvK4aTMbbUZ8mt7pyF4rES478H0otCoZ9f7PWOw/exec";
 
     window.location.href =
         `${scriptUrl}?bonus=${selectedPrize.code}`;
