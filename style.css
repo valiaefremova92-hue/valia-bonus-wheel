@@ -8,21 +8,20 @@ body{
 font-family:'Montserrat',sans-serif;
 background:
 radial-gradient(circle at center,#ff8a00 0%,#ff6500 45%,#4d1f00 100%);
-min-height:100vh;
+min-height:100dvh;
 overflow-x:hidden;
 overflow-y:auto;
 -webkit-overflow-scrolling:touch;
-display:flex;
-justify-content:center;
-align-items:center;
+position:relative;
 }
 
 .app{
 width:100%;
 max-width:500px;
-padding:30px 20px;
+padding:30px 20px 80px;
 text-align:center;
 position:relative;
+margin:0 auto;
 }
 
 .bg-glow{
@@ -83,9 +82,9 @@ z-index:20;
 width:100%;
 height:100%;
 transition:transform 6s cubic-bezier(.12,.8,.18,1);
-transform-origin:center center;
+transform-origin:50% 50%;
 will-change:transform;
-touch-action:none;
+backface-visibility:hidden;
 }
 
 .wheel-image{
