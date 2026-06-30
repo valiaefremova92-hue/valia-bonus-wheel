@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bonus Wheel</title>
+
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="app">
+
+    <div class="bg-glow"></div>
+
+    <h1>
+        КРУТИ БАРАБАН
+        <span>Отримай свій бонус на автоматизацію 🎁</span>
+    </h1>
+
+    <div class="wheel-wrapper">
+
+        <img src="images/mascot.png" class="mascot">
+
+        <div class="pointer"></div>
+
+        <div id="wheel" class="wheel">
+            <img src="images/wheel-ui.png" class="wheel-image">
+        </div>
+
+        <img src="images/center.png" class="wheel-center">
+
+    </div>
+
+    <button id="spinBtn">🎡 Крутити барабан</button>
+
+    <p id="statusText">Натисни кнопку для старту</p>
+
+</div>
+
+<div id="overlay" class="overlay hidden">
+    <div class="popup">
+        <h2 id="rewardTitle"></h2>
+        <p id="rewardSubtitle"></p>
+
+        <button id="claimBtn">Забрати бонус</button>
+    </div>
+</div>
+
+<audio id="spinSound" src="sounds/spin.mp3"></audio>
+<audio id="winSound" src="sounds/win.mp3"></audio>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
+class="claim-btn">
+
+Забрати подарунок
+
+</button>
+
+</div>
+
+</div>
+
+<!-- ========================= -->
+<!-- LOADER -->
+<!-- ========================= -->
+
+<div
+
+id="loading"
+
+class="loading hidden">
+
+<div class="loader">
+
+</div>
+
+<p>
+
+Перевіряємо подарунок...
+
+</p>
+
+</div>
+
+</div>
+
+<script src="config.js"></script>
+
+<script src="wheel.js"></script>
+
+<script src="animations.js"></script>
+
+<script src="api.js"></script>
+
+<script src="sounds.js"></script>
+
+</body>
+
+</html>
