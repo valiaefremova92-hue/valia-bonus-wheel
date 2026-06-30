@@ -1,7 +1,9 @@
+window.addEventListener("DOMContentLoaded", () => {
+
 const tg = window.Telegram?.WebApp;
 
-tg.ready();
-tg.expand();
+tg?.ready();
+tg?.expand();
 
 const user = tg?.initDataUnsafe?.user || {};
 
@@ -26,58 +28,22 @@ const winSound = document.getElementById("winSound");
 
 let spinning = false;
 let currentRotation = 0;
-let currentPrize = null;
 
 const prizes = [
-{
-title:"500 грн",
-subtitle:"на Telegram-бот",
-code:"bonus_1"
-},
-{
-title:"-15%",
-subtitle:"на перший бот",
-code:"bonus_2"
-},
-{
-title:"-10%",
-subtitle:"на будь-яку послугу",
-code:"bonus_3"
-},
-{
-title:"Instagram тригер",
-subtitle:"у подарунок",
-code:"bonus_4"
-},
-{
-title:"Вітальне повідомлення",
-subtitle:"безкоштовно",
-code:"bonus_5"
-},
-{
-title:"Супровід 1 місяць",
-subtitle:"після запуску",
-code:"bonus_6"
-},
-{
-title:"Тригер на сторіс",
-subtitle:"у подарунок",
-code:"bonus_7"
-}
+{title:"500 грн",subtitle:"на Telegram-бот",code:"bonus_1"},
+{title:"-15%",subtitle:"на перший бот",code:"bonus_2"},
+{title:"-10%",subtitle:"на будь-яку послугу",code:"bonus_3"},
+{title:"Instagram тригер",subtitle:"у подарунок",code:"bonus_4"},
+{title:"Вітальне повідомлення",subtitle:"безкоштовно",code:"bonus_5"},
+{title:"Супровід 1 місяць",subtitle:"після запуску",code:"bonus_6"},
+{title:"Тригер на сторіс",subtitle:"у подарунок",code:"bonus_7"}
 ];
 
-/* ============================= */
-/* CHECK USER */
-/* ============================= */
-
-checkUser();
+spinBtn.addEventListener("click", spinWheel);
 
 async function checkUser(){
 
-if(!user.id){
-console.log("No Telegram user ID");
-return;
-}
+if(!user.id) return;
 
 try{
 
@@ -86,8 +52,6 @@ const response = await fetch(
 );
 
 const result = await response.json();
-
-console.log("Check user result:", result);
 
 if(result.status === "already_used"){
 
@@ -100,22 +64,16 @@ statusText.innerText =
 }
 
 }catch(error){
-
-console.log("Check user error:", error);
-
+console.log(error);
 }
 
 }
 
-/* ============================= */
-/* SPIN */
-/* ============================= */
-
-spinBtn.addEventListener("click", spinWheel);
+checkUser();
 
 function spinWheel(){
 
-if(spinning) return;
+if(spinning || spinBtn.disabled) return;
 
 spinning = true;
 
@@ -127,8 +85,6 @@ Math.floor(Math.random() * prizes.length);
 
 const prize = prizes[prizeIndex];
 
-currentPrize = prize;
-
 const sectorAngle =
 360 / prizes.length;
 
@@ -138,21 +94,13 @@ const extraSpins =
 const stopAngle =
 prizeIndex * sectorAngle;
 
-currentRotation +=
-extraSpins + stopAngle;
+currentRotation += extraSpins + stopAngle;
 
 spinSound.currentTime = 0;
-
-spinSound.play().catch(()=>{
-console.log("Spin sound blocked");
-});
+spinSound.play().catch(()=>{});
 
 wheel.style.transform =
 `rotate(-${currentRotation}deg)`;
-
-/* ============================= */
-/* RESULT */
-/* ============================= */
 
 setTimeout(async ()=>{
 
@@ -169,10 +117,7 @@ await saveBonus(prize);
 overlay.classList.remove("hidden");
 
 winSound.currentTime = 0;
-
-winSound.play().catch(()=>{
-console.log("Win sound blocked");
-});
+winSound.play().catch(()=>{});
 
 confetti({
 particleCount:180,
@@ -189,10 +134,6 @@ spinning = false;
 
 }
 
-/* ============================= */
-/* SAVE BONUS */
-/* ============================= */
-
 async function saveBonus(prize){
 
 const data = {
@@ -207,49 +148,30 @@ date: new Date().toISOString()
 
 try{
 
-const response = await fetch(
-SCRIPT_URL,
-{
+await fetch(SCRIPT_URL,{
 method:"POST",
 headers:{
 "Content-Type":"application/json"
 },
 body: JSON.stringify(data)
-}
-);
-
-const result = await response.json();
-
-console.log("Save bonus result:", result);
+});
 
 }catch(error){
-
-console.log("Save error:", error);
-
+console.log(error);
 }
 
 }
 
-/* ============================= */
-/* GO TO BOT */
-/* ============================= */
-
-claimBtn.addEventListener("click", goToBot);
-
-function goToBot(){
+claimBtn.addEventListener("click", ()=>{
 
 overlay.classList.add("hidden");
 
 if(window.Telegram?.WebApp){
-
-try{
 Telegram.WebApp.close();
-}catch(error){
-window.location.href = BOT_LINK;
-}
-
 }else{
 window.location.href = BOT_LINK;
 }
 
-}
+});
+
+});
