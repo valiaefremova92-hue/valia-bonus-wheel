@@ -2,12 +2,17 @@
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
 <title>Bonus Wheel</title>
 
 <link rel="stylesheet" href="style.css">
+
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
 <div class="app">
@@ -21,15 +26,15 @@
 
     <div class="wheel-wrapper">
 
-        <img src="images/mascot.png" class="mascot">
+        <img src="images/mascot.png" class="mascot" alt="Bot">
 
         <div class="pointer"></div>
 
         <div id="wheel" class="wheel">
-            <img src="images/wheel-ui.png" class="wheel-image">
+            <img src="images/wheel-ui.png" class="wheel-image" alt="Wheel">
         </div>
 
-        <img src="images/center.png" class="wheel-center">
+        <img src="images/center.png" class="wheel-center" alt="Center">
 
     </div>
 
@@ -43,10 +48,13 @@
 
 </div>
 
+<!-- Popup -->
+
 <div id="overlay" class="overlay hidden">
     <div class="popup">
 
         <h2 id="rewardTitle"></h2>
+
         <p id="rewardSubtitle"></p>
 
         <button id="claimBtn">
@@ -56,12 +64,25 @@
     </div>
 </div>
 
-<audio id="spinSound" src="sounds/spin.mp3"></audio>
-<audio id="winSound" src="sounds/win.mp3"></audio>
+<!-- Sounds -->
+
+<audio id="spinSound" preload="auto">
+    <source src="sounds/spin.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="winSound" preload="auto">
+    <source src="sounds/win.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Confetti -->
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
+<!-- Main App -->
+
 <script src="app.js"></script>
 
+</body>
+</html>
 </body>
 </html>
