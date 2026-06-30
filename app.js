@@ -1,3 +1,9 @@
+const SCRIPT_URL =
+"https://script.google.com/macros/s/AKfycbwBh-ZbWIlVAsnDvXDDrDfVVhfR9J1zvK4aTMbbUZ8mt7pyF4rES478H0otCoZ9f7PWOw/exec";
+
+const BOT_LINK =
+"https://t.me/valia_botmaker_bot";
+
 const wheel = document.getElementById("wheel");
 const spinBtn = document.getElementById("spinBtn");
 const overlay = document.getElementById("overlay");
@@ -11,7 +17,7 @@ const winSound = document.getElementById("winSound");
 
 let spinning = false;
 let currentRotation = 0;
-let lastPrizeIndex = null;
+let currentPrize = null;
 
 const prizes = [
 {
@@ -59,12 +65,15 @@ if(spinning) return;
 
 spinning = true;
 
-statusText.innerText = "🎁 Перевіряємо ваш бонус...";
+statusText.innerText =
+"🎁 Перевіряємо ваш бонус...";
 
 const prizeIndex =
 Math.floor(Math.random()*prizes.length);
 
-lastPrizeIndex = prizeIndex;
+const prize = prizes[prizeIndex];
+
+currentPrize = prize;
 
 const sectorAngle = 360 / prizes.length;
 const extraSpins = 360 * 6;
@@ -74,9 +83,7 @@ currentRotation += extraSpins + stopAngle;
 
 spinSound.currentTime = 0;
 
-spinSound.play().catch(()=>{
-console.log("sound blocked");
-});
+spinSound.play().catch(()=>{});
 
 wheel.style.transform =
 `rotate(-${currentRotation}deg)`;
@@ -85,19 +92,19 @@ setTimeout(()=>{
 
 spinSound.pause();
 
-const prize = prizes[prizeIndex];
+rewardTitle.innerText =
+"🎉 Ви виграли!";
 
-rewardTitle.innerText = "🎉 Ви виграли!";
 rewardSubtitle.innerText =
 `${prize.title} ${prize.subtitle}`;
+
+saveBonus(prize);
 
 overlay.classList.remove("hidden");
 
 winSound.currentTime = 0;
 
-winSound.play().catch(()=>{
-console.log("sound blocked");
-});
+winSound.play().catch(()=>{});
 
 confetti({
 particleCount:180,
@@ -105,7 +112,8 @@ spread:100,
 origin:{y:0.6}
 });
 
-statusText.innerText = "🎉 Бонус готовий";
+statusText.innerText =
+"🎉 Бонус готовий";
 
 spinning = false;
 
@@ -113,31 +121,40 @@ spinning = false;
 
 }
 
-claimBtn.addEventListener("click", async ()=>{
+function saveBonus(prize){
 
-overlay.classList.add("hidden");
+const tg = window.Telegram?.WebApp;
+const user = tg?.initDataUnsafe?.user || {};
 
-if(lastPrizeIndex === null) return;
+const data = {
+telegram_id: user.id || "",
+username: user.username || "",
+first_name: user.first_name || "",
+bonus_code: prize.code,
+bonus_title: prize.title,
+bonus_subtitle: prize.subtitle,
+date: new Date().toISOString()
+};
 
-const selectedPrize =
-prizes[lastPrizeIndex];
-
-const scriptUrl =
-"https://script.google.com/macros/s/AKfycbwBh-ZbWIlVAsnDvXDDrDfVVhfR9J1zvK4aTMbbUZ8mt7pyF4rES478H0otCoZ9f7PWOw/exec";
-
-try{
-
-await fetch(
-`${scriptUrl}?bonus=${selectedPrize.code}`
-);
-
-window.location.href =
-"https://t.me/valia_botmaker_bot";
-
-}catch(error){
-
-console.log(error);
+fetch(SCRIPT_URL,{
+method:"POST",
+mode:"no-cors",
+headers:{
+"Content-Type":"application/json"
+},
+body: JSON.stringify(data)
+});
 
 }
 
-});
+claimBtn.addEventListener("click", goToBot);
+
+function goToBot(){
+
+if(window.Telegram?.WebApp){
+Telegram.WebApp.close();
+}else{
+window.location.href = BOT_LINK;
+}
+
+}
