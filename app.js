@@ -72,6 +72,11 @@ function spinWheel() {
 
     currentRotation += extraSpins + stopAngle;
 
+spinSound.currentTime = 0;
+
+spinSound.play().catch(() => {
+    console.log("sound blocked");
+});
     spinSound.currentTime = 0;
     spinSound.play();
 
