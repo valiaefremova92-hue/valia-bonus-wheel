@@ -12,69 +12,89 @@ const winSound = document.getElementById("winSound");
 let spinning = false;
 let currentRotation = 0;
 
+/* prizes */
 const prizes = [
-["500 грн","на Telegram-бот"],
-["-15%","на перший бот"],
-["-10%","на будь-яку послугу"],
-["Instagram тригер","у подарунок"],
-["Вітальне повідомлення","безкоштовно"],
-["Супровід 1 місяць","після запуску"],
-["Тригер на сторіс","у подарунок"]
+    ["500 грн", "на Telegram-бот"],
+    ["-15%", "на перший бот"],
+    ["-10%", "на будь-яку послугу"],
+    ["Instagram тригер", "у подарунок"],
+    ["Вітальне повідомлення", "безкоштовно"],
+    ["Супровід 1 місяць", "після запуску"],
+    ["Тригер на сторіс", "у подарунок"]
 ];
 
+/* spin button */
 spinBtn.addEventListener("click", spinWheel);
 
-function spinWheel(){
+/* spin logic */
+function spinWheel() {
+    if (spinning) return;
 
-if(spinning) return;
+    spinning = true;
 
-spinning = true;
+    statusText.innerText = "🎁 Перевіряємо ваш бонус...";
 
-statusText.innerText = "🎁 Перевіряємо ваш бонус...";
+    const prizeIndex = Math.floor(
+        Math.random() * prizes.length
+    );
 
-const prizeIndex = Math.floor(Math.random()*prizes.length);
+    const sectorAngle = 360 / prizes.length;
+    const extraSpins = 360 * 6;
+    const stopAngle = prizeIndex * sectorAngle;
 
-const sectorAngle = 360 / prizes.length;
+    currentRotation += extraSpins + stopAngle;
 
-const extraSpins = 360 * 6;
+    /* start sound */
+    spinSound.currentTime = 0;
+    spinSound.play();
 
-const stopAngle = prizeIndex * sectorAngle;
+    /* rotate wheel */
+    wheel.style.transform =
+        `rotate(-${currentRotation}deg)`;
 
-currentRotation += extraSpins + stopAngle;
+    /* finish spin */
+    setTimeout(() => {
 
-spinSound.currentTime = 0;
-spinSound.play();
+        /* stop spin sound */
+        spinSound.pause();
 
-wheel.style.transform = `rotate(-${currentRotation}deg)`;
+        /* popup text */
+        rewardTitle.innerText =
+            "🎉 Ви виграли!";
 
-setTimeout(()=>{
+        rewardSubtitle.innerText =
+            `${prizes[prizeIndex][0]} ${prizes[prizeIndex][1]}`;
 
-spinSound.pause();
+        /* show popup */
+        overlay.classList.remove("hidden");
 
-rewardTitle.innerText = prizes[prizeIndex][0];
-rewardSubtitle.innerText = prizes[prizeIndex][1];
+        /* win sound */
+        winSound.currentTime = 0;
+        winSound.play();
 
-overlay.classList.remove("hidden");
+        /* confetti */
+        confetti({
+            particleCount: 180,
+            spread: 100,
+            origin: { y: 0.6 }
+        });
 
-winSound.currentTime = 0;
-winSound.play();
+        /* status */
+        statusText.innerText =
+            "🎉 Бонус готовий";
 
-confetti({
-particleCount:180,
-spread:100
-});
+        spinning = false;
 
-spinning = false;
-
-},6000);
-
+    }, 6000);
 }
 
-claimBtn.addEventListener("click",()=>{
+/* claim button */
+claimBtn.addEventListener("click", () => {
 
-overlay.classList.add("hidden");
+    overlay.classList.add("hidden");
 
-window.location.href =
-"https://https://t.me/valia_botmaker_bot?start=bonus";
+    /* redirect to bot */
+    window.location.href =
+        "https://t.me/valia_botmaker_bot?start=bonus";
 
 });
