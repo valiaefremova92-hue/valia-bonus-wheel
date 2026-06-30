@@ -1,5 +1,5 @@
 const SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbzS_KuzMA99RPZH7W0G3t7gZEOvP14QFzOtxuToZiMa58HCCIDPhSKUH0Q0IF_N53eWZw/exec";
+"https://script.google.com/macros/s/AKfycbxkV5bZs6j-SkE2DvpoG4ZhFqkFzshcBmswa7JNkZShx5sr9bJVk24u-vCnNyHgMsHZgQ/exec";
 
 const BOT_LINK =
 "https://t.me/valia_botmaker_bot";
@@ -14,6 +14,9 @@ const statusText = document.getElementById("statusText");
 
 const spinSound = document.getElementById("spinSound");
 const winSound = document.getElementById("winSound");
+
+const tg = window.Telegram?.WebApp;
+const user = tg?.initDataUnsafe?.user || {};
 
 let spinning = false;
 let currentRotation = 0;
@@ -57,7 +60,40 @@ code:"bonus_7"
 }
 ];
 
+checkUser();
+
 spinBtn.addEventListener("click", spinWheel);
+
+async function checkUser(){
+
+if(!user.id) return;
+
+try{
+
+const response = await fetch(
+`${SCRIPT_URL}?user_id=${user.id}`
+);
+
+const result = await response.json();
+
+if(result.status === "already_used"){
+
+spinBtn.disabled = true;
+
+spinBtn.style.opacity = ".5";
+
+statusText.innerText =
+"❌ Ви вже використали свою спробу";
+
+}
+
+}catch(error){
+
+console.log(error);
+
+}
+
+}
 
 function spinWheel(){
 
@@ -122,9 +158,6 @@ spinning = false;
 }
 
 function saveBonus(prize){
-
-const tg = window.Telegram?.WebApp;
-const user = tg?.initDataUnsafe?.user || {};
 
 const data = {
 telegram_id: user.id || "",
