@@ -6,8 +6,7 @@ box-sizing:border-box;
 
 body{
 font-family:'Montserrat',sans-serif;
-background:
-radial-gradient(circle at center,#ff8a00 0%,#ff6500 45%,#4d1f00 100%);
+background:radial-gradient(circle at center,#ff8a00 0%,#ff6500 45%,#4d1f00 100%);
 min-height:100dvh;
 overflow-x:hidden;
 overflow-y:auto;
@@ -24,6 +23,8 @@ position:relative;
 margin:0 auto;
 }
 
+/* Glow */
+
 .bg-glow{
 position:absolute;
 width:420px;
@@ -35,7 +36,10 @@ top:180px;
 left:50%;
 transform:translateX(-50%);
 z-index:0;
+pointer-events:none;
 }
+
+/* Title */
 
 h1{
 position:relative;
@@ -57,6 +61,8 @@ color:rgba(255,255,255,.85);
 text-transform:none;
 }
 
+/* Wheel */
+
 .wheel-wrapper{
 position:relative;
 width:340px;
@@ -76,15 +82,19 @@ border-left:18px solid transparent;
 border-right:18px solid transparent;
 border-top:38px solid #FFD700;
 z-index:20;
+pointer-events:none;
 }
 
 .wheel{
 width:100%;
 height:100%;
 transition:transform 6s cubic-bezier(.12,.8,.18,1);
-transform-origin:50% 50%;
+transform-origin:center center;
 will-change:transform;
 backface-visibility:hidden;
+touch-action:none;
+user-select:none;
+-webkit-user-select:none;
 }
 
 .wheel-image{
@@ -104,6 +114,8 @@ z-index:10;
 pointer-events:none;
 }
 
+/* Mascot */
+
 .mascot{
 position:absolute;
 width:110px;
@@ -112,6 +124,8 @@ bottom:20px;
 z-index:11;
 pointer-events:none;
 }
+
+/* Button */
 
 #spinBtn{
 border:none;
@@ -123,32 +137,53 @@ font-size:24px;
 font-weight:800;
 cursor:pointer;
 box-shadow:0 15px 35px rgba(255,122,0,.35);
+opacity:1 !important;
+pointer-events:auto !important;
+position:relative;
+z-index:50;
 }
+
+#spinBtn:active{
+transform:scale(.98);
+}
+
+/* Status */
 
 #statusText{
 margin-top:20px;
 font-size:18px;
 color:white;
+position:relative;
+z-index:2;
 }
+
+/* Overlay */
 
 .overlay{
 position:fixed;
-inset:0;
+top:0;
+left:0;
+width:100%;
+height:100%;
 background:rgba(0,0,0,.75);
 display:flex;
 justify-content:center;
 align-items:center;
 z-index:100;
+padding:20px;
 }
 
 .hidden{
 display:none;
 }
 
+/* Popup */
+
 .popup{
 background:white;
 padding:35px;
-width:340px;
+width:100%;
+max-width:340px;
 border-radius:24px;
 text-align:center;
 animation:popupShow .35s ease;
@@ -157,11 +192,13 @@ animation:popupShow .35s ease;
 .popup h2{
 font-size:28px;
 margin-bottom:15px;
+color:#111;
 }
 
 .popup p{
 font-size:20px;
 margin-bottom:25px;
+color:#333;
 }
 
 #claimBtn{
@@ -175,6 +212,8 @@ font-weight:700;
 cursor:pointer;
 }
 
+/* Animation */
+
 @keyframes popupShow{
 from{
 opacity:0;
@@ -186,7 +225,13 @@ transform:scale(1);
 }
 }
 
+/* Mobile */
+
 @media(max-width:480px){
+
+.app{
+padding:25px 15px 60px;
+}
 
 h1{
 font-size:40px;
@@ -194,21 +239,47 @@ font-size:40px;
 
 h1 span{
 font-size:20px;
+margin-top:15px;
 }
 
 .wheel-wrapper{
 width:280px;
 height:280px;
+margin:30px auto;
 }
 
 .mascot{
 width:85px;
 left:-20px;
+bottom:15px;
+}
+
+.wheel-center{
+width:70px;
 }
 
 #spinBtn{
 font-size:20px;
-padding:16px 30px;
+padding:16px 28px;
+border-radius:18px;
 }
 
+#statusText{
+font-size:16px;
+margin-top:15px;
+}
+
+.popup{
+padding:28px;
+}
+
+.popup h2{
+font-size:24px;
+}
+
+.popup p{
+font-size:18px;
+}
+
+}
 }
