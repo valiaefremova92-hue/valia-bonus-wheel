@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bonus Wheel</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bonus Wheel</title>
 
-    <link rel="stylesheet" href="style.css">
-
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -15,51 +14,39 @@
 
     <div class="bg-glow"></div>
 
-    <div class="content">
+    <h1>
+        КРУТИ БАРАБАН
+        <span>Отримай свій бонус на автоматизацію 🎁</span>
+    </h1>
 
-        <h1>
-            КРУТИ БАРАБАН
-            <span>Отримай свій бонус на автоматизацію 🎁</span>
-        </h1>
+    <div class="wheel-wrapper">
 
-        <div class="wheel-wrapper">
+        <img src="images/mascot.png" class="mascot">
 
-            <!-- ботик -->
-            <img src="images/mascot.png" class="mascot" alt="bot">
+        <div class="pointer"></div>
 
-            <!-- стрілка -->
-            <div class="pointer"></div>
-
-            <!-- колесо -->
-            <div id="wheel" class="wheel">
-                <img src="images/wheel-ui.png" class="wheel-image" alt="wheel">
-            </div>
-
-            <!-- серединка -->
-            <img src="images/center.png" class="wheel-center" alt="center">
-
+        <div id="wheel" class="wheel">
+            <img src="images/wheel-ui.png" class="wheel-image">
         </div>
 
-        <!-- кнопка -->
-        <button id="spinBtn">
-            🎡 Крутити барабан
-        </button>
-
-        <!-- статус -->
-        <p id="statusText">
-            Натисни кнопку для старту
-        </p>
+        <img src="images/center.png" class="wheel-center">
 
     </div>
 
+    <button id="spinBtn">
+        🎡 Крутити барабан
+    </button>
+
+    <p id="statusText">
+        Натисни кнопку для старту
+    </p>
+
 </div>
 
-<!-- popup -->
 <div id="overlay" class="overlay hidden">
     <div class="popup">
 
         <h2 id="rewardTitle"></h2>
-
         <p id="rewardSubtitle"></p>
 
         <button id="claimBtn">
@@ -69,14 +56,11 @@
     </div>
 </div>
 
-<!-- sounds -->
 <audio id="spinSound" src="sounds/spin.mp3"></audio>
 <audio id="winSound" src="sounds/win.mp3"></audio>
 
-<!-- confetti -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-<!-- logic -->
 <script src="app.js"></script>
 
 </body>
