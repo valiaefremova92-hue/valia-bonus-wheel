@@ -56,13 +56,13 @@ function spinWheel() {
   spinSound.play().catch(() => {});
 
   wheel.style.transition = "transform 6s ease-out";
-  wheel.style.transform = rotate(-${currentRotation}deg);
+  wheel.style.transform = `rotate(-${currentRotation}deg)`;
 
   setTimeout(() => {
     spinSound.pause();
 
     rewardTitle.innerText = "🎉 Ви виграли!";
-    rewardSubtitle.innerText = ${prize.title} ${prize.subtitle};
+    rewardSubtitle.innerText = `${prize.title} ${prize.subtitle}`;
 
     overlay.classList.remove("hidden");
 
@@ -80,26 +80,11 @@ function spinWheel() {
     saveBonus(prize);
 
     spinning = false;
-
   }, 6000);
 }
 
 function saveBonus(prize) {
-  let user = {};
-
-  try {
-    const hash = window.location.hash.replace("#tgWebAppData=", "");
-    const tgParams = new URLSearchParams(hash);
-
-    const userString = tgParams.get("user");
-
-    if (userString) {
-      user = JSON.parse(decodeURIComponent(userString));
-    }
-
-  } catch (error) {
-    console.log("TG PARSE ERROR:", error);
-  }
+  const user = tg?.initDataUnsafe?.user || {};
 
   const data = {
     telegram_id: user.id || "NO_ID",
