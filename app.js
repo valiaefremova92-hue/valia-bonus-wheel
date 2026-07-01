@@ -1,12 +1,3 @@
-const tg = window.Telegram.WebApp;
-
-tg.ready();
-tg.expand();
-
-const user = tg.initDataUnsafe.user;
-
-console.log("USER:", user);
-
 const SCRIPT_URL =
 "https://script.google.com/macros/s/AKfycbxNzcyFGcF_oRgg1wxmdWIJFnrxZBD-PRN4wO_M9PH7PT2tfEwxGLRmzm8WsQAGnB1Cqw/exec";
 
@@ -79,8 +70,7 @@ statusText.innerText =
 const prizeIndex =
 Math.floor(Math.random() * prizes.length);
 
-const prize =
-prizes[prizeIndex];
+const prize = prizes[prizeIndex];
 
 const sectorAngle =
 360 / prizes.length;
@@ -110,9 +100,8 @@ rewardTitle.innerText =
 rewardSubtitle.innerText =
 `${prize.title} ${prize.subtitle}`;
 
-saveBonus(prize);
-
-overlay.classList.remove("hidden");
+document.getElementById("overlay")
+.classList.remove("hidden");
 
 winSound.currentTime = 0;
 winSound.play().catch(()=>{});
@@ -126,6 +115,8 @@ origin:{y:0.6}
 statusText.innerText =
 "🎉 Бонус готовий";
 
+saveBonus(prize);
+
 spinning = false;
 
 },6000);
@@ -134,8 +125,11 @@ spinning = false;
 
 function saveBonus(prize){
 
+const tg = window.Telegram?.WebApp;
+const user = tg?.initDataUnsafe?.user || {};
+
 const data = {
-telegram_id: user.id,
+telegram_id: user.id || "",
 username: user.username || "",
 first_name: user.first_name || "",
 bonus_code: prize.code,
@@ -144,30 +138,25 @@ bonus_subtitle: prize.subtitle,
 date: new Date().toISOString()
 };
 
-console.log("SEND DATA:", data);
-
-fetch(
-SCRIPT_URL,
-{
+fetch(SCRIPT_URL,{
 method:"POST",
 mode:"no-cors",
 headers:{
 "Content-Type":"application/json"
 },
 body: JSON.stringify(data)
-}
-).catch(error => console.log(error));
+});
 
 }
 
-claimBtn.addEventListener("click", ()=>{
+function goToBot(){
 
-overlay.classList.add("hidden");
-
-if(window.Telegram.WebApp){
+if(window.Telegram?.WebApp){
 Telegram.WebApp.close();
 }else{
 window.location.href = BOT_LINK;
 }
 
-});
+}
+
+claimBtn.addEventListener("click", goToBot);
