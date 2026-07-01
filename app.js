@@ -71,8 +71,7 @@ const prizeIndex =
 Math.floor(Math.random() * prizes.length);
 
 const prize = prizes[prizeIndex];
-
-const sectorAngle const SCRIPT_URL =
+const SCRIPT_URL =
 "https://script.google.com/macros/s/AKfycbxNzcyFGcF_oRgg1wxmdWIJFnrxZBD-PRN4wO_M9PH7PT2tfEwxGLRmzm8WsQAGnB1Cqw/exec";
 
 const BOT_LINK =
@@ -93,13 +92,13 @@ let spinning = false;
 let currentRotation = 0;
 
 const prizes = [
-  { title: "500 грн", subtitle: "на Telegram-бот", code: "bonus_1" },
-  { title: "-15%", subtitle: "на перший бот", code: "bonus_2" },
-  { title: "-10%", subtitle: "на будь-яку послугу", code: "bonus_3" },
-  { title: "Instagram тригер", subtitle: "у подарунок", code: "bonus_4" },
-  { title: "Вітальне повідомлення", subtitle: "безкоштовно", code: "bonus_5" },
-  { title: "Супровід 1 місяць", subtitle: "після запуску", code: "bonus_6" },
-  { title: "Тригер на сторіс", subtitle: "у подарунок", code: "bonus_7" }
+  { title:"500 грн", subtitle:"на Telegram-бот", code:"bonus_1" },
+  { title:"-15%", subtitle:"на перший бот", code:"bonus_2" },
+  { title:"-10%", subtitle:"на будь-яку послугу", code:"bonus_3" },
+  { title:"Instagram тригер", subtitle:"у подарунок", code:"bonus_4" },
+  { title:"Вітальне повідомлення", subtitle:"безкоштовно", code:"bonus_5" },
+  { title:"Супровід 1 місяць", subtitle:"після запуску", code:"bonus_6" },
+  { title:"Тригер на сторіс", subtitle:"у подарунок", code:"bonus_7" }
 ];
 
 spinBtn.addEventListener("click", spinWheel);
@@ -149,32 +148,18 @@ function spinWheel() {
   }, 6000);
 }
 
-function saveBonus(prize){
+function saveBonus(prize) {
+  const params = new URLSearchParams(window.location.search);
 
-const params = new URLSearchParams(window.location.search);
-
-const data = {
-telegram_id: params.get("chat_id") || "",
-username: params.get("username") || "",
-first_name: params.get("name") || "",
-bonus_code: prize.code,
-bonus_title: prize.title,
-bonus_subtitle: prize.subtitle,
-date: new Date().toISOString()
-};
-
-console.log("SEND DATA:", data);
-
-fetch(SCRIPT_URL,{
-method:"POST",
-mode:"no-cors",
-headers:{
-"Content-Type":"application/json"
-},
-body: JSON.stringify(data)
-}).catch(error => console.log(error));
-
-}
+  const data = {
+    telegram_id: params.get("chat_id") || "",
+    username: params.get("username") || "",
+    first_name: params.get("name") || "",
+    bonus_code: prize.code,
+    bonus_title: prize.title,
+    bonus_subtitle: prize.subtitle,
+    date: new Date().toISOString()
+  };
 
   console.log("SEND DATA:", data);
 
