@@ -1,76 +1,5 @@
-const SCRIPT_URL =
-https://script.google.com/macros/s/AKfycbxNzcyFGcF_oRgg1wxmdWIJFnrxZBD-PRN4wO_M9PH7PT2tfEwxGLRmzm8WsQAGnB1Cqw/exec";
+document.addEventListener("DOMContentLoaded", () => {
 
-const BOT_LINK =
-"https://t.me/valia_botmaker_bot";
-
-const wheel = document.getElementById("wheel");
-const spinBtn = document.getElementById("spinBtn");
-const overlay = document.getElementById("overlay");
-const rewardTitle = document.getElementById("rewardTitle");
-const rewardSubtitle = document.getElementById("rewardSubtitle");
-const claimBtn = document.getElementById("claimBtn");
-const statusText = document.getElementById("statusText");
-
-const spinSound = document.getElementById("spinSound");
-const winSound = document.getElementById("winSound");
-
-let spinning = false;
-let currentRotation = 0;
-
-const prizes = [
-{
-title:"500 грн",
-subtitle:"на Telegram-бот",
-code:"bonus_1"
-},
-{
-title:"-15%",
-subtitle:"на перший бот",
-code:"bonus_2"
-},
-{
-title:"-10%",
-subtitle:"на будь-яку послугу",
-code:"bonus_3"
-},
-{
-title:"Instagram тригер",
-subtitle:"у подарунок",
-code:"bonus_4"
-},
-{
-title:"Вітальне повідомлення",
-subtitle:"безкоштовно",
-code:"bonus_5"
-},
-{
-title:"Супровід 1 місяць",
-subtitle:"після запуску",
-code:"bonus_6"
-},
-{
-title:"Тригер на сторіс",
-subtitle:"у подарунок",
-code:"bonus_7"
-}
-];
-
-spinBtn.addEventListener("click", spinWheel);
-
-function spinWheel(){
-
-if(spinning) return;
-
-spinning = true;
-
-statusText.innerText =
-"🎁 Крутимо барабан...";
-
-const prizeIndex =
-Math.floor(Math.random() * prizes.length);
-
-const prize = prizes[prizeIndex];
 const SCRIPT_URL =
 "https://script.google.com/macros/s/AKfycbxNzcyFGcF_oRgg1wxmdWIJFnrxZBD-PRN4wO_M9PH7PT2tfEwxGLRmzm8WsQAGnB1Cqw/exec";
 
@@ -84,7 +13,6 @@ const rewardTitle = document.getElementById("rewardTitle");
 const rewardSubtitle = document.getElementById("rewardSubtitle");
 const claimBtn = document.getElementById("claimBtn");
 const statusText = document.getElementById("statusText");
-
 const spinSound = document.getElementById("spinSound");
 const winSound = document.getElementById("winSound");
 
@@ -92,93 +20,113 @@ let spinning = false;
 let currentRotation = 0;
 
 const prizes = [
-  { title:"500 грн", subtitle:"на Telegram-бот", code:"bonus_1" },
-  { title:"-15%", subtitle:"на перший бот", code:"bonus_2" },
-  { title:"-10%", subtitle:"на будь-яку послугу", code:"bonus_3" },
-  { title:"Instagram тригер", subtitle:"у подарунок", code:"bonus_4" },
-  { title:"Вітальне повідомлення", subtitle:"безкоштовно", code:"bonus_5" },
-  { title:"Супровід 1 місяць", subtitle:"після запуску", code:"bonus_6" },
-  { title:"Тригер на сторіс", subtitle:"у подарунок", code:"bonus_7" }
+{ title:"500 грн", subtitle:"на Telegram-бот", code:"bonus_1" },
+{ title:"-15%", subtitle:"на перший бот", code:"bonus_2" },
+{ title:"-10%", subtitle:"на будь-яку послугу", code:"bonus_3" },
+{ title:"Instagram тригер", subtitle:"у подарунок", code:"bonus_4" },
+{ title:"Вітальне повідомлення", subtitle:"безкоштовно", code:"bonus_5" },
+{ title:"Супровід 1 місяць", subtitle:"після запуску", code:"bonus_6" },
+{ title:"Тригер на сторіс", subtitle:"у подарунок", code:"bonus_7" }
 ];
 
-spinBtn.addEventListener("click", spinWheel);
+spinBtn.onclick = function(){
 
-function spinWheel() {
-  if (spinning) return;
+if(spinning) return;
 
-  spinning = true;
-  statusText.innerText = "🎁 Крутимо барабан...";
+spinning = true;
 
-  const prizeIndex = Math.floor(Math.random() * prizes.length);
-  const prize = prizes[prizeIndex];
+statusText.innerText = "🎁 Крутимо барабан...";
 
-  const sectorAngle = 360 / prizes.length;
-  const extraSpins = 360 * 6;
-  const stopAngle = prizeIndex * sectorAngle;
+const prizeIndex = Math.floor(Math.random() * prizes.length);
+const prize = prizes[prizeIndex];
 
-  currentRotation += extraSpins + stopAngle;
+const sectorAngle = 360 / prizes.length;
+const extraSpins = 360 * 6;
+const stopAngle = prizeIndex * sectorAngle;
 
-  spinSound.currentTime = 0;
-  spinSound.play().catch(() => {});
+currentRotation += extraSpins + stopAngle;
 
-  wheel.style.transform = `rotate(-${currentRotation}deg)`;
+spinSound.currentTime = 0;
+spinSound.play().catch(()=>{});
 
-  setTimeout(() => {
-    spinSound.pause();
+wheel.style.transform = `rotate(-${currentRotation}deg)`;
 
-    rewardTitle.innerText = "🎉 Ви виграли!";
-    rewardSubtitle.innerText = `${prize.title} ${prize.subtitle}`;
+setTimeout(() => {
 
-    overlay.classList.remove("hidden");
+spinSound.pause();
 
-    winSound.currentTime = 0;
-    winSound.play().catch(() => {});
+rewardTitle.innerText = "🎉 Ви виграли!";
+rewardSubtitle.innerText = `${prize.title} ${prize.subtitle}`;
 
-    confetti({
-      particleCount: 180,
-      spread: 100,
-      origin: { y: 0.6 }
-    });
+overlay.classList.remove("hidden");
 
-    statusText.innerText = "🎉 Бонус готовий";
+winSound.currentTime = 0;
+winSound.play().catch(()=>{});
 
-    saveBonus(prize);
+confetti({
+particleCount:180,
+spread:100,
+origin:{ y:0.6 }
+});
 
-    spinning = false;
-  }, 6000);
+statusText.innerText = "🎉 Бонус готовий";
+
+saveBonus(prize);
+
+spinning = false;
+
+}, 6000);
+
+};
+
+function saveBonus(prize){
+
+let chatId = "";
+let username = "";
+let firstName = "";
+
+try{
+const params = new URLSearchParams(window.location.search);
+
+chatId = params.get("chat_id") || "";
+username = params.get("username") || "";
+firstName = params.get("name") || "";
+}catch(e){
+console.log("params error", e);
 }
 
-function saveBonus(prize) {
-  const params = new URLSearchParams(window.location.search);
+const data = {
+telegram_id: chatId,
+username: username,
+first_name: firstName,
+bonus_code: prize.code,
+bonus_title: prize.title,
+bonus_subtitle: prize.subtitle,
+date: new Date().toISOString()
+};
 
-  const data = {
-    telegram_id: params.get("chat_id") || "",
-    username: params.get("username") || "",
-    first_name: params.get("name") || "",
-    bonus_code: prize.code,
-    bonus_title: prize.title,
-    bonus_subtitle: prize.subtitle,
-    date: new Date().toISOString()
-  };
+console.log(data);
 
-  console.log("SEND DATA:", data);
+fetch(SCRIPT_URL,{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body: JSON.stringify(data)
+}).catch(err => console.log(err));
 
-  fetch(SCRIPT_URL, {
-    method: "POST",
-    mode: "no-cors",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-  }).catch(error => console.log(error));
 }
 
-claimBtn.addEventListener("click", function () {
-  overlay.classList.add("hidden");
+claimBtn.onclick = function(){
 
-  if (window.Telegram && window.Telegram.WebApp) {
-    window.Telegram.WebApp.close();
-  } else {
-    window.location.href = BOT_LINK;
-  }
+overlay.classList.add("hidden");
+
+if(window.Telegram && window.Telegram.WebApp){
+window.Telegram.WebApp.close();
+}else{
+window.location.href = BOT_LINK;
+}
+
+};
+
 });
