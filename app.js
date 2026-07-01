@@ -82,6 +82,9 @@ function spinWheel() {
 
 function saveBonus(prize) {
 
+  // показує реальний URL який відкрив бот
+  alert(window.location.href);
+
   const params = new URLSearchParams(window.location.search);
 
   const data = {
