@@ -88,7 +88,6 @@ pointer-events:none;
 .wheel{
 width:100%;
 height:100%;
-transition:transform 6s cubic-bezier(.12,.8,.18,1);
 transform-origin:center center;
 will-change:transform;
 backface-visibility:hidden;
@@ -141,6 +140,7 @@ opacity:1 !important;
 pointer-events:auto !important;
 position:relative;
 z-index:50;
+transition:transform .2s ease;
 }
 
 #spinBtn:active{
@@ -281,5 +281,4 @@ font-size:24px;
 font-size:18px;
 }
 
-}
 }
