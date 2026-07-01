@@ -1,5 +1,5 @@
 const SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbyBXpMoJTv0h-RZjLbTi8kjO1Qebohqygk2SlJa53QrgoAGmQz87twzLgNHbWUP1OA7aw/exec";
+"https://script.google.com/macros/s/AKfycbz7z-3sEVGF68fmmKHWcKnP67fSTRQO7U-BoGjTpMAuhO79jd2GOlhDqgO_Lc7BmeQa/exec";
 
 const BOT_LINK =
 "https://t.me/valia_botmaker_bot";
@@ -56,13 +56,13 @@ function spinWheel() {
   spinSound.play().catch(() => {});
 
   wheel.style.transition = "transform 6s ease-out";
-  wheel.style.transform = `rotate(-${currentRotation}deg)`;
+  wheel.style.transform = rotate(-${currentRotation}deg);
 
   setTimeout(() => {
     spinSound.pause();
 
     rewardTitle.innerText = "🎉 Ви виграли!";
-    rewardSubtitle.innerText = `${prize.title} ${prize.subtitle}`;
+    rewardSubtitle.innerText = ${prize.title} ${prize.subtitle};
 
     overlay.classList.remove("hidden");
 
@@ -102,14 +102,16 @@ function saveBonus(prize) {
   }
 
   const data = {
-    telegram_id: user.id || "NO_ID",
-    username: user.username || "NO_USERNAME",
+    telegram_id: user.id  "NO_ID",
+    username: user.username  "NO_USERNAME",
     first_name: user.first_name || "NO_NAME",
     bonus_code: prize.code,
     bonus_title: prize.title,
     bonus_subtitle: prize.subtitle,
     date: new Date().toISOString()
   };
+
+  console.log("SEND DATA:", data);
 
   fetch(SCRIPT_URL, {
     method: "POST",
