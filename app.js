@@ -1,5 +1,5 @@
 const SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbwj4pvArkvOpCEgP8fyfGnsfxSvY5xyukDfyZKW30NSln1gM8OTY71Z4GF-VvnqYBDdZA/exec";
+"https://script.google.com/macros/s/AKfycbyBXpMoJTv0h-RZjLbTi8kjO1Qebohqygk2SlJa53QrgoAGmQz87twzLgNHbWUP1OA7aw/exec";
 
 const BOT_LINK =
 "https://t.me/valia_botmaker_bot";
@@ -35,9 +35,49 @@ const prizes = [
   { title:"Тригер на сторіс", subtitle:"у подарунок", code:"bonus_7" }
 ];
 
-spinBtn.onclick = spinWheel;
+spinBtn.onclick = checkAndSpin;
 
-function spinWheel() {
+async function checkAndSpin() {
+  let user = {};
+
+  try {
+    const hash = window.location.hash.replace("#tgWebAppData=", "");
+    const tgParams = new URLSearchParams(hash);
+    const userString = tgParams.get("user");
+
+    if (userString) {
+      user = JSON.parse(decodeURIComponent(userString));
+    }
+  } catch (error) {
+    console.log(error);
+  }
+
+  if (!user.id) {
+    alert("Не вдалося отримати Telegram ID");
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `${SCRIPT_URL}?user_id=${user.id}`
+    );
+
+    const result = await response.json();
+
+    // якщо вже крутив
+    if (result.status === "success") {
+      alert("Ти вже крутила барабан 🎁");
+      return;
+    }
+
+    spinWheel(user);
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function spinWheel(user) {
   if (spinning) return;
 
   spinning = true;
@@ -77,32 +117,16 @@ function spinWheel() {
 
     statusText.innerText = "🎉 Бонус готовий";
 
-    saveBonus(prize);
+    saveBonus(prize, user);
 
     spinning = false;
 
   }, 6000);
 }
 
-function saveBonus(prize) {
-  let user = {};
-
-  try {
-    const hash = window.location.hash.replace("#tgWebAppData=", "");
-    const tgParams = new URLSearchParams(hash);
-
-    const userString = tgParams.get("user");
-
-    if (userString) {
-      user = JSON.parse(decodeURIComponent(userString));
-    }
-
-  } catch (error) {
-    console.log("TG PARSE ERROR:", error);
-  }
-
+function saveBonus(prize, user) {
   const data = {
-    telegram_id: user.id || "NO_ID",
+    telegram_id: user.id,
     username: user.username || "NO_USERNAME",
     first_name: user.first_name || "NO_NAME",
     bonus_code: prize.code,
@@ -110,8 +134,6 @@ function saveBonus(prize) {
     bonus_subtitle: prize.subtitle,
     date: new Date().toISOString()
   };
-
-  console.log("SEND DATA:", data);
 
   fetch(SCRIPT_URL, {
     method: "POST",
