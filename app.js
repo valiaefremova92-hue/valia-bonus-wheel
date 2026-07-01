@@ -1,14 +1,19 @@
-const tg = window.Telegram?.WebApp;
+const tg = window.Telegram?.WebApp || null;
+
+let user = {};
 
 if (tg) {
-  tg.ready();
-  tg.expand();
+  try {
+    tg.ready();
+    tg.expand();
+    user = tg.initDataUnsafe?.user || {};
+  } catch (error) {
+    console.log("Telegram init error:", error);
+  }
 }
 
-const user = tg?.initDataUnsafe?.user || {};
-
 const SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbzsMpEUrLSh8NGNeSMX_XMh-WVfEVJ01PVq9Q93w2YUalkvo2pVT8EhyRcC0np_AeumeQ/execc";
+"https://script.google.com/macros/s/AKfycbzsMpEUrLSh8NGNeSMX_XMh-WVfEVJ01PVq9Q93w2YUalkvo2pVT8EhyRcC0np_AeumeQ/exec";
 
 const BOT_LINK =
 "https://t.me/valia_botmaker_bot";
@@ -26,15 +31,44 @@ const winSound = document.getElementById("winSound");
 
 let spinning = false;
 let currentRotation = 0;
+let selectedPrize = null;
 
 const prizes = [
-{title:"500 грн",subtitle:"на Telegram-бот",code:"bonus_1"},
-{title:"-15%",subtitle:"на перший бот",code:"bonus_2"},
-{title:"-10%",subtitle:"на будь-яку послугу",code:"bonus_3"},
-{title:"Instagram тригер",subtitle:"у подарунок",code:"bonus_4"},
-{title:"Вітальне повідомлення",subtitle:"безкоштовно",code:"bonus_5"},
-{title:"Супровід 1 місяць",subtitle:"після запуску",code:"bonus_6"},
-{title:"Тригер на сторіс",subtitle:"у подарунок",code:"bonus_7"}
+{
+title:"500 грн",
+subtitle:"на Telegram-бот",
+code:"bonus_1"
+},
+{
+title:"-15%",
+subtitle:"на перший бот",
+code:"bonus_2"
+},
+{
+title:"-10%",
+subtitle:"на будь-яку послугу",
+code:"bonus_3"
+},
+{
+title:"Instagram тригер",
+subtitle:"у подарунок",
+code:"bonus_4"
+},
+{
+title:"Вітальне повідомлення",
+subtitle:"безкоштовно",
+code:"bonus_5"
+},
+{
+title:"Супровід 1 місяць",
+subtitle:"після запуску",
+code:"bonus_6"
+},
+{
+title:"Тригер на сторіс",
+subtitle:"у подарунок",
+code:"bonus_7"
+}
 ];
 
 spinBtn.addEventListener("click", spinWheel);
@@ -51,7 +85,8 @@ statusText.innerText =
 const prizeIndex =
 Math.floor(Math.random() * prizes.length);
 
-const prize = prizes[prizeIndex];
+selectedPrize =
+prizes[prizeIndex];
 
 const sectorAngle =
 360 / prizes.length;
@@ -66,6 +101,7 @@ currentRotation +=
 extraSpins + stopAngle;
 
 spinSound.currentTime = 0;
+
 spinSound.play().catch(()=>{});
 
 wheel.style.transform =
@@ -79,13 +115,18 @@ rewardTitle.innerText =
 "🎉 Ви виграли!";
 
 rewardSubtitle.innerText =
-`${prize.title} ${prize.subtitle}`;
+`${selectedPrize.title} ${selectedPrize.subtitle}`;
 
-await saveBonus(prize);
+try{
+await saveBonus();
+}catch(error){
+console.log("Save error:", error);
+}
 
 overlay.classList.remove("hidden");
 
 winSound.currentTime = 0;
+
 winSound.play().catch(()=>{});
 
 confetti({
@@ -103,20 +144,19 @@ spinning = false;
 
 }
 
-async function saveBonus(prize){
+async function saveBonus(){
 
 const data = {
 telegram_id: user.id || "test_user",
 username: user.username || "test_username",
 first_name: user.first_name || "test_name",
-bonus_code: prize.code,
-bonus_title: prize.title,
-bonus_subtitle: prize.subtitle
+bonus_code: selectedPrize.code,
+bonus_title: selectedPrize.title,
+bonus_subtitle: selectedPrize.subtitle,
+date: new Date().toISOString()
 };
 
 console.log("SEND DATA:", data);
-
-try{
 
 const response = await fetch(
 SCRIPT_URL,
@@ -133,12 +173,6 @@ const result = await response.text();
 
 console.log("SCRIPT RESPONSE:", result);
 
-}catch(error){
-
-console.log("FETCH ERROR:", error);
-
-}
-
 }
 
 claimBtn.addEventListener("click", ()=>{
@@ -146,9 +180,14 @@ claimBtn.addEventListener("click", ()=>{
 overlay.classList.add("hidden");
 
 if(window.Telegram?.WebApp){
+try{
 Telegram.WebApp.close();
+}catch(error){
+window.location.href = BOT_LINK;
+}
 }else{
 window.location.href = BOT_LINK;
 }
 
+});
 });
