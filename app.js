@@ -1,19 +1,14 @@
-const tg = window.Telegram?.WebApp || null;
-
-let user = {};
+const tg = window.Telegram?.WebApp;
 
 if (tg) {
-  try {
-    tg.ready();
-    tg.expand();
-    user = tg.initDataUnsafe?.user || {};
-  } catch (error) {
-    console.log("Telegram init error:", error);
-  }
+  tg.ready();
+  tg.expand();
 }
 
+const user = tg?.initDataUnsafe?.user || {};
+
 const SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbzsMpEUrLSh8NGNeSMX_XMh-WVfEVJ01PVq9Q93w2YUalkvo2pVT8EhyRcC0np_AeumeQ/exec";
+"https://script.google.com/macros/s/AKfycbxdLLidP2jZCHv_s5X22feqHnaQAW5u-fxcZpSoo2f64t0LlWke9-70APKlgeDbVt8Bqg/exec";
 
 const BOT_LINK =
 "https://t.me/valia_botmaker_bot";
@@ -31,7 +26,6 @@ const winSound = document.getElementById("winSound");
 
 let spinning = false;
 let currentRotation = 0;
-let selectedPrize = null;
 
 const prizes = [
 {
@@ -71,11 +65,44 @@ code:"bonus_7"
 }
 ];
 
+checkUser();
+
 spinBtn.addEventListener("click", spinWheel);
+
+async function checkUser(){
+
+if(!user.id) return;
+
+try{
+
+const response = await fetch(
+`${SCRIPT_URL}?user_id=${user.id}`
+);
+
+const result = await response.json();
+
+if(result.status === "already_used"){
+
+spinBtn.disabled = true;
+
+spinBtn.style.opacity = ".5";
+
+statusText.innerText =
+"❌ Ви вже використали свою спробу";
+
+}
+
+}catch(error){
+
+console.log(error);
+
+}
+
+}
 
 function spinWheel(){
 
-if(spinning) return;
+if(spinning || spinBtn.disabled) return;
 
 spinning = true;
 
@@ -85,7 +112,7 @@ statusText.innerText =
 const prizeIndex =
 Math.floor(Math.random() * prizes.length);
 
-selectedPrize =
+const prize =
 prizes[prizeIndex];
 
 const sectorAngle =
@@ -115,12 +142,16 @@ rewardTitle.innerText =
 "🎉 Ви виграли!";
 
 rewardSubtitle.innerText =
-`${selectedPrize.title} ${selectedPrize.subtitle}`;
+`${prize.title} ${prize.subtitle}`;
 
 try{
-await saveBonus();
+
+await saveBonus(prize);
+
 }catch(error){
-console.log("Save error:", error);
+
+console.log(error);
+
 }
 
 overlay.classList.remove("hidden");
@@ -144,21 +175,19 @@ spinning = false;
 
 }
 
-async function saveBonus(){
+async function saveBonus(prize){
 
 const data = {
-telegram_id: user.id || "test_user",
-username: user.username || "test_username",
-first_name: user.first_name || "test_name",
-bonus_code: selectedPrize.code,
-bonus_title: selectedPrize.title,
-bonus_subtitle: selectedPrize.subtitle,
+telegram_id: user.id || "",
+username: user.username || "",
+first_name: user.first_name || "",
+bonus_code: prize.code,
+bonus_title: prize.title,
+bonus_subtitle: prize.subtitle,
 date: new Date().toISOString()
 };
 
-console.log("SEND DATA:", data);
-
-const response = await fetch(
+await fetch(
 SCRIPT_URL,
 {
 method:"POST",
@@ -169,10 +198,6 @@ body: JSON.stringify(data)
 }
 );
 
-const result = await response.text();
-
-console.log("SCRIPT RESPONSE:", result);
-
 }
 
 claimBtn.addEventListener("click", ()=>{
@@ -180,14 +205,13 @@ claimBtn.addEventListener("click", ()=>{
 overlay.classList.add("hidden");
 
 if(window.Telegram?.WebApp){
-try{
+
 Telegram.WebApp.close();
-}catch(error){
-window.location.href = BOT_LINK;
-}
+
 }else{
+
 window.location.href = BOT_LINK;
+
 }
 
-});
 });
