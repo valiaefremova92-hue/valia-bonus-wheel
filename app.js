@@ -1,5 +1,5 @@
 const SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbz7z-3sEVGF68fmmKHWcKnP67fSTRQO7U-BoGjTpMAuhO79jd2GOlhDqgO_Lc7BmeQa/exec";
+"https://script.google.com/macros/s/AKfycbypypR1oRPYKKOu2RVv7TB_aWnjFHPqxS_EVd3TN5lQnu4pMshy9lbS2lHNfjU34Cz6Hw/exec";
 
 const BOT_LINK =
 "https://t.me/valia_botmaker_bot";
@@ -102,8 +102,8 @@ function saveBonus(prize) {
   }
 
   const data = {
-    telegram_id: user.id  "NO_ID",
-    username: user.username  "NO_USERNAME",
+    telegram_id: user.id || "NO_ID",
+    username: user.username || "NO_USERNAME",
     first_name: user.first_name || "NO_NAME",
     bonus_code: prize.code,
     bonus_title: prize.title,
