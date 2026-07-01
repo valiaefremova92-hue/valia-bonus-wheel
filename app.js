@@ -8,7 +8,7 @@ if (tg) {
 const user = tg?.initDataUnsafe?.user || {};
 
 const SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbz95S4e8_nYBMjdvWDavoFJyjHa_P63QBwtyCI925j6iBtpkst_czwfWvvmFsyWhbo/exec";
+"https://script.google.com/macros/s/AKfycbxNzcyFGcF_oRgg1wxmdWIJFnrxZBD-PRN4wO_M9PH7PT2tfEwxGLRmzm8WsQAGnB1Cqw/exec";
 
 const BOT_LINK =
 "https://t.me/valia_botmaker_bot";
@@ -28,13 +28,41 @@ let spinning = false;
 let currentRotation = 0;
 
 const prizes = [
-{title:"500 грн",subtitle:"на Telegram-бот",code:"bonus_1"},
-{title:"-15%",subtitle:"на перший бот",code:"bonus_2"},
-{title:"-10%",subtitle:"на будь-яку послугу",code:"bonus_3"},
-{title:"Instagram тригер",subtitle:"у подарунок",code:"bonus_4"},
-{title:"Вітальне повідомлення",subtitle:"безкоштовно",code:"bonus_5"},
-{title:"Супровід 1 місяць",subtitle:"після запуску",code:"bonus_6"},
-{title:"Тригер на сторіс",subtitle:"у подарунок",code:"bonus_7"}
+{
+title:"500 грн",
+subtitle:"на Telegram-бот",
+code:"bonus_1"
+},
+{
+title:"-15%",
+subtitle:"на перший бот",
+code:"bonus_2"
+},
+{
+title:"-10%",
+subtitle:"на будь-яку послугу",
+code:"bonus_3"
+},
+{
+title:"Instagram тригер",
+subtitle:"у подарунок",
+code:"bonus_4"
+},
+{
+title:"Вітальне повідомлення",
+subtitle:"безкоштовно",
+code:"bonus_5"
+},
+{
+title:"Супровід 1 місяць",
+subtitle:"після запуску",
+code:"bonus_6"
+},
+{
+title:"Тригер на сторіс",
+subtitle:"у подарунок",
+code:"bonus_7"
+}
 ];
 
 spinBtn.addEventListener("click", spinWheel);
@@ -51,7 +79,8 @@ statusText.innerText =
 const prizeIndex =
 Math.floor(Math.random() * prizes.length);
 
-const prize = prizes[prizeIndex];
+const prize =
+prizes[prizeIndex];
 
 const sectorAngle =
 360 / prizes.length;
@@ -66,6 +95,7 @@ currentRotation +=
 extraSpins + stopAngle;
 
 spinSound.currentTime = 0;
+
 spinSound.play().catch(()=>{});
 
 wheel.style.transform =
@@ -86,6 +116,7 @@ saveBonus(prize);
 overlay.classList.remove("hidden");
 
 winSound.currentTime = 0;
+
 winSound.play().catch(()=>{});
 
 confetti({
@@ -106,12 +137,13 @@ spinning = false;
 function saveBonus(prize){
 
 const data = {
-telegram_id: user.id || "test_user",
-username: user.username || "test_username",
-first_name: user.first_name || "test_name",
+telegram_id: user.id || "",
+username: user.username || "",
+first_name: user.first_name || "",
 bonus_code: prize.code,
 bonus_title: prize.title,
-bonus_subtitle: prize.subtitle
+bonus_subtitle: prize.subtitle,
+date: new Date().toISOString()
 };
 
 fetch(
@@ -138,5 +170,4 @@ Telegram.WebApp.close();
 window.location.href = BOT_LINK;
 }
 
-});
 });
