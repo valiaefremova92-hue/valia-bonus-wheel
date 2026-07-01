@@ -1,8 +1,8 @@
 const tg = window.Telegram?.WebApp;
 
 if (tg) {
-  tg.ready();
-  tg.expand();
+    tg.ready();
+    tg.expand();
 }
 
 const user = tg?.initDataUnsafe?.user || {};
@@ -26,6 +26,7 @@ const winSound = document.getElementById("winSound");
 
 let spinning = false;
 let currentRotation = 0;
+let currentPrize = null;
 
 const prizes = [
 {
@@ -71,7 +72,10 @@ spinBtn.addEventListener("click", spinWheel);
 
 async function checkUser(){
 
-if(!user.id) return;
+if(!user.id){
+console.log("No Telegram user ID");
+return;
+}
 
 try{
 
@@ -81,10 +85,11 @@ const response = await fetch(
 
 const result = await response.json();
 
+console.log("CHECK USER:", result);
+
 if(result.status === "already_used"){
 
 spinBtn.disabled = true;
-
 spinBtn.style.opacity = ".5";
 
 statusText.innerText =
@@ -94,7 +99,7 @@ statusText.innerText =
 
 }catch(error){
 
-console.log(error);
+console.log("CHECK ERROR:", error);
 
 }
 
@@ -114,6 +119,8 @@ Math.floor(Math.random() * prizes.length);
 
 const prize =
 prizes[prizeIndex];
+
+currentPrize = prize;
 
 const sectorAngle =
 360 / prizes.length;
@@ -148,9 +155,12 @@ try{
 
 await saveBonus(prize);
 
+spinBtn.disabled = true;
+spinBtn.style.opacity = ".5";
+
 }catch(error){
 
-console.log(error);
+console.log("SAVE ERROR:", error);
 
 }
 
@@ -178,16 +188,20 @@ spinning = false;
 async function saveBonus(prize){
 
 const data = {
-telegram_id: user.id || "",
-username: user.username || "",
-first_name: user.first_name || "",
+telegram_id: user.id || "test_user",
+username: user.username || "test_username",
+first_name: user.first_name || "test_name",
 bonus_code: prize.code,
 bonus_title: prize.title,
 bonus_subtitle: prize.subtitle,
 date: new Date().toISOString()
 };
 
-await fetch(
+console.log("SEND DATA:", data);
+
+try{
+
+const response = await fetch(
 SCRIPT_URL,
 {
 method:"POST",
@@ -198,6 +212,18 @@ body: JSON.stringify(data)
 }
 );
 
+const result = await response.text();
+
+console.log("SCRIPT RESPONSE:", result);
+
+}catch(error){
+
+console.log("FETCH ERROR:", error);
+
+throw error;
+
+}
+
 }
 
 claimBtn.addEventListener("click", ()=>{
@@ -206,10 +232,19 @@ overlay.classList.add("hidden");
 
 if(window.Telegram?.WebApp){
 
+try{
 Telegram.WebApp.close();
+}catch(error){
+window.location.href = BOT_LINK;
+}
 
 }else{
 
+window.location.href = BOT_LINK;
+
+}
+
+});
 window.location.href = BOT_LINK;
 
 }
