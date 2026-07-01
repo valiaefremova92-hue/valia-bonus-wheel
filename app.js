@@ -1,5 +1,3 @@
-document.addEventListener("DOMContentLoaded", () => {
-
 const SCRIPT_URL =
 "https://script.google.com/macros/s/AKfycbwj4pvArkvOpCEgP8fyfGnsfxSvY5xyukDfyZKW30NSln1gM8OTY71Z4GF-VvnqYBDdZA/exec";
 
@@ -29,12 +27,97 @@ const prizes = [
 { title:"Тригер на сторіс", subtitle:"у подарунок", code:"bonus_7" }
 ];
 
-spinBtn.onclick = function(){
+function spinWheel(){
 
 if(spinning) return;
 
 spinning = true;
 
+statusText.innerText = "🎁 Крутимо барабан...";
+
+const prizeIndex = Math.floor(Math.random() * prizes.length);
+const prize = prizes[prizeIndex];
+
+const sectorAngle = 360 / prizes.length;
+const extraSpins = 360 * 6;
+const stopAngle = prizeIndex * sectorAngle;
+
+currentRotation += extraSpins + stopAngle;
+
+spinSound.currentTime = 0;
+spinSound.play().catch(()=>{});
+
+wheel.style.transform = `rotate(-${currentRotation}deg)`;
+
+setTimeout(() => {
+
+spinSound.pause();
+
+rewardTitle.innerText = "🎉 Ви виграли!";
+rewardSubtitle.innerText = `${prize.title} ${prize.subtitle}`;
+
+overlay.classList.remove("hidden");
+
+winSound.currentTime = 0;
+winSound.play().catch(()=>{});
+
+confetti({
+particleCount:180,
+spread:100,
+origin:{ y:0.6 }
+});
+
+statusText.innerText = "🎉 Бонус готовий";
+
+saveBonus(prize);
+
+spinning = false;
+
+}, 6000);
+
+}
+
+function saveBonus(prize){
+
+const tg = window.Telegram?.WebApp;
+const user = tg?.initDataUnsafe?.user || {};
+
+const data = {
+telegram_id: user.id || "",
+username: user.username || "",
+first_name: user.first_name || "",
+bonus_code: prize.code,
+bonus_title: prize.title,
+bonus_subtitle: prize.subtitle,
+date: new Date().toISOString()
+};
+
+console.log("SEND DATA:", data);
+
+fetch(SCRIPT_URL,{
+method:"POST",
+mode:"no-cors",
+headers:{
+"Content-Type":"application/json"
+},
+body: JSON.stringify(data)
+});
+
+}
+
+spinBtn.onclick = spinWheel;
+
+claimBtn.onclick = function(){
+
+overlay.classList.add("hidden");
+
+if(window.Telegram?.WebApp){
+window.Telegram.WebApp.close();
+}else{
+window.location.href = BOT_LINK;
+}
+
+};
 statusText.innerText = "🎁 Крутимо барабан...";
 
 const prizeIndex = Math.floor(Math.random() * prizes.length);
