@@ -38,7 +38,6 @@ const prizes = [
 spinBtn.onclick = spinWheel;
 
 function spinWheel() {
-
   if (spinning) return;
 
   spinning = true;
@@ -60,7 +59,6 @@ function spinWheel() {
   wheel.style.transform = `rotate(-${currentRotation}deg)`;
 
   setTimeout(() => {
-
     spinSound.pause();
 
     rewardTitle.innerText = "🎉 Ви виграли!";
@@ -87,8 +85,26 @@ function spinWheel() {
 }
 
 function saveBonus(prize) {
+  let user = {};
 
-  const user = tg?.initDataUnsafe?.user || {};
+  try {
+    const hash = window.location.hash;
+
+    const tgDataString = decodeURIComponent(
+      hash.replace("#tgWebAppData=", "")
+    );
+
+    const tgParams = new URLSearchParams(tgDataString);
+
+    const userString = tgParams.get("user");
+
+    if (userString) {
+      user = JSON.parse(userString);
+    }
+
+  } catch (error) {
+    console.log("TG PARSE ERROR:", error);
+  }
 
   const data = {
     telegram_id: user.id || "NO_ID",
@@ -110,11 +126,9 @@ function saveBonus(prize) {
     },
     body: JSON.stringify(data)
   }).catch(error => console.log(error));
-
 }
 
 claimBtn.onclick = function () {
-
   overlay.classList.add("hidden");
 
   if (tg) {
@@ -122,5 +136,4 @@ claimBtn.onclick = function () {
   } else {
     window.location.href = BOT_LINK;
   }
-
 };
