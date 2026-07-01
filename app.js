@@ -35,49 +35,9 @@ const prizes = [
   { title:"Тригер на сторіс", subtitle:"у подарунок", code:"bonus_7" }
 ];
 
-spinBtn.onclick = checkAndSpin;
+spinBtn.onclick = spinWheel;
 
-async function checkAndSpin() {
-  let user = {};
-
-  try {
-    const hash = window.location.hash.replace("#tgWebAppData=", "");
-    const tgParams = new URLSearchParams(hash);
-    const userString = tgParams.get("user");
-
-    if (userString) {
-      user = JSON.parse(decodeURIComponent(userString));
-    }
-  } catch (error) {
-    console.log(error);
-  }
-
-  if (!user.id) {
-    alert("Не вдалося отримати Telegram ID");
-    return;
-  }
-
-  try {
-    const response = await fetch(
-      `${SCRIPT_URL}?user_id=${user.id}`
-    );
-
-    const result = await response.json();
-
-    // якщо вже крутив
-    if (result.status === "success") {
-      alert("Ти вже крутила барабан 🎁");
-      return;
-    }
-
-    spinWheel(user);
-
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-function spinWheel(user) {
+function spinWheel() {
   if (spinning) return;
 
   spinning = true;
@@ -117,16 +77,32 @@ function spinWheel(user) {
 
     statusText.innerText = "🎉 Бонус готовий";
 
-    saveBonus(prize, user);
+    saveBonus(prize);
 
     spinning = false;
 
   }, 6000);
 }
 
-function saveBonus(prize, user) {
+function saveBonus(prize) {
+  let user = {};
+
+  try {
+    const hash = window.location.hash.replace("#tgWebAppData=", "");
+    const tgParams = new URLSearchParams(hash);
+
+    const userString = tgParams.get("user");
+
+    if (userString) {
+      user = JSON.parse(decodeURIComponent(userString));
+    }
+
+  } catch (error) {
+    console.log("TG PARSE ERROR:", error);
+  }
+
   const data = {
-    telegram_id: user.id,
+    telegram_id: user.id || "NO_ID",
     username: user.username || "NO_USERNAME",
     first_name: user.first_name || "NO_NAME",
     bonus_code: prize.code,
