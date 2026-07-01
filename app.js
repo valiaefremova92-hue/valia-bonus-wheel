@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 
 const SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbxNzcyFGcF_oRgg1wxmdWIJFnrxZBD-PRN4wO_M9PH7PT2tfEwxGLRmzm8WsQAGnB1Cqw/exec";
+"https://script.google.com/macros/s/AKfycbwj4pvArkvOpCEgP8fyfGnsfxSvY5xyukDfyZKW30NSln1gM8OTY71Z4GF-VvnqYBDdZA/exec";
 
 const BOT_LINK =
 "https://t.me/valia_botmaker_bot";
