@@ -1,11 +1,11 @@
-const tg = window.Telegram?.WebApp;
+const tg = window.Telegram.WebApp;
 
-if (tg) {
-  tg.ready();
-  tg.expand();
-}
+tg.ready();
+tg.expand();
 
-const user = tg?.initDataUnsafe?.user || {};
+const user = tg.initDataUnsafe.user;
+
+console.log("USER:", user);
 
 const SCRIPT_URL =
 "https://script.google.com/macros/s/AKfycbxNzcyFGcF_oRgg1wxmdWIJFnrxZBD-PRN4wO_M9PH7PT2tfEwxGLRmzm8WsQAGnB1Cqw/exec";
@@ -95,7 +95,6 @@ currentRotation +=
 extraSpins + stopAngle;
 
 spinSound.currentTime = 0;
-
 spinSound.play().catch(()=>{});
 
 wheel.style.transform =
@@ -116,7 +115,6 @@ saveBonus(prize);
 overlay.classList.remove("hidden");
 
 winSound.currentTime = 0;
-
 winSound.play().catch(()=>{});
 
 confetti({
@@ -137,7 +135,7 @@ spinning = false;
 function saveBonus(prize){
 
 const data = {
-telegram_id: user.id || "",
+telegram_id: user.id,
 username: user.username || "",
 first_name: user.first_name || "",
 bonus_code: prize.code,
@@ -145,6 +143,8 @@ bonus_title: prize.title,
 bonus_subtitle: prize.subtitle,
 date: new Date().toISOString()
 };
+
+console.log("SEND DATA:", data);
 
 fetch(
 SCRIPT_URL,
@@ -164,7 +164,7 @@ claimBtn.addEventListener("click", ()=>{
 
 overlay.classList.add("hidden");
 
-if(window.Telegram?.WebApp){
+if(window.Telegram.WebApp){
 Telegram.WebApp.close();
 }else{
 window.location.href = BOT_LINK;
