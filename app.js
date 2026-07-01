@@ -8,7 +8,7 @@ if (tg) {
 const user = tg?.initDataUnsafe?.user || {};
 
 const SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbyrZV--UVSeKYM7fSnlrCXNmknxX3nZE_opDx_iIa-rRwwVd8M4mdLlElFpHe_lyOhipw/exec";
+"https://script.google.com/macros/s/AKfycbyy7NGywmZCP5ay_fnZthme2alhU0SvRs2WJF-_iJ0ixTRkRa-oXFTl2AGo4Z9Udldehg/exec";
 
 const BOT_LINK =
 "https://t.me/valia_botmaker_bot";
