@@ -149,19 +149,32 @@ function spinWheel() {
   }, 6000);
 }
 
-function saveBonus(prize) {
-  const tg = window.Telegram ? window.Telegram.WebApp : null;
-  const user = tg ? tg.initDataUnsafe.user : {};
+function saveBonus(prize){
 
-  const data = {
-    telegram_id: user?.id || "",
-    username: user?.username || "",
-    first_name: user?.first_name || "",
-    bonus_code: prize.code,
-    bonus_title: prize.title,
-    bonus_subtitle: prize.subtitle,
-    date: new Date().toISOString()
-  };
+const params = new URLSearchParams(window.location.search);
+
+const data = {
+telegram_id: params.get("chat_id") || "",
+username: params.get("username") || "",
+first_name: params.get("name") || "",
+bonus_code: prize.code,
+bonus_title: prize.title,
+bonus_subtitle: prize.subtitle,
+date: new Date().toISOString()
+};
+
+console.log("SEND DATA:", data);
+
+fetch(SCRIPT_URL,{
+method:"POST",
+mode:"no-cors",
+headers:{
+"Content-Type":"application/json"
+},
+body: JSON.stringify(data)
+}).catch(error => console.log(error));
+
+}
 
   console.log("SEND DATA:", data);
 
