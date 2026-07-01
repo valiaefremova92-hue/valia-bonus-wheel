@@ -131,6 +131,74 @@ window.location.href = BOT_LINK;
 };
 
 });
+confetti({
+particleCount:180,
+spread:100,
+origin:{ y:0.6 }
+});
+
+statusText.innerText = "🎉 Бонус готовий";
+
+saveBonus(prize);
+
+spinning = false;
+
+}, 6000);
+
+};
+
+function saveBonus(prize){
+
+let chatId = "";
+let username = "";
+let firstName = "";
+
+try{
+const params = new URLSearchParams(window.location.search);
+
+chatId = params.get("chat_id") || "";
+username = params.get("username") || "";
+firstName = params.get("name") || "";
+}catch(e){
+console.log("params error", e);
+}
+
+const data = {
+telegram_id: chatId,
+username: username,
+first_name: firstName,
+bonus_code: prize.code,
+bonus_title: prize.title,
+bonus_subtitle: prize.subtitle,
+date: new Date().toISOString()
+};
+
+console.log("SEND DATA:", data);
+
+fetch(SCRIPT_URL,{
+method:"POST",
+mode:"no-cors",
+headers:{
+"Content-Type":"application/json"
+},
+body: JSON.stringify(data)
+});
+
+}
+
+claimBtn.onclick = function(){
+
+overlay.classList.add("hidden");
+
+if(window.Telegram && window.Telegram.WebApp){
+window.Telegram.WebApp.close();
+}else{
+window.location.href = BOT_LINK;
+}
+
+};
+
+});
 statusText.innerText = "🎁 Крутимо барабан...";
 
 const prizeIndex = Math.floor(Math.random() * prizes.length);
