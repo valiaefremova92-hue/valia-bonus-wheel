@@ -4,6 +4,13 @@ const SCRIPT_URL =
 const BOT_LINK =
 "https://t.me/valia_botmaker_bot";
 
+const tg = window.Telegram?.WebApp;
+
+if (tg) {
+  tg.ready();
+  tg.expand();
+}
+
 const wheel = document.querySelector(".wheel-image");
 const spinBtn = document.getElementById("spinBtn");
 const overlay = document.getElementById("overlay");
@@ -35,7 +42,6 @@ function spinWheel() {
   if (spinning) return;
 
   spinning = true;
-
   statusText.innerText = "🎁 Крутимо барабан...";
 
   const prizeIndex = Math.floor(Math.random() * prizes.length);
@@ -82,15 +88,12 @@ function spinWheel() {
 
 function saveBonus(prize) {
 
-  // показує реальний URL який відкрив бот
-  alert(window.location.href);
-
-  const params = new URLSearchParams(window.location.search);
+  const user = tg?.initDataUnsafe?.user || {};
 
   const data = {
-    telegram_id: params.get("chat_id") || "",
-    username: params.get("username") || "",
-    first_name: params.get("name") || "",
+    telegram_id: user.id || "NO_ID",
+    username: user.username || "NO_USERNAME",
+    first_name: user.first_name || "NO_NAME",
     bonus_code: prize.code,
     bonus_title: prize.title,
     bonus_subtitle: prize.subtitle,
@@ -114,8 +117,8 @@ claimBtn.onclick = function () {
 
   overlay.classList.add("hidden");
 
-  if (window.Telegram?.WebApp) {
-    window.Telegram.WebApp.close();
+  if (tg) {
+    tg.close();
   } else {
     window.location.href = BOT_LINK;
   }
