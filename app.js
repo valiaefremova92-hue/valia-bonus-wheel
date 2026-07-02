@@ -84,6 +84,7 @@ function spinWheel() {
 }
 
 function saveBonus(prize) {
+ alert(window.location.hash);
   let user = {};
 
   try {
