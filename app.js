@@ -87,9 +87,17 @@ function saveBonus(prize) {
   let user = {};
 
   try {
-    user = tg?.initDataUnsafe?.user || {};
+    const hash = window.location.hash.replace("#tgWebAppData=", "");
+    const tgParams = new URLSearchParams(hash);
+
+    const userString = tgParams.get("user");
+
+    if (userString) {
+      user = JSON.parse(decodeURIComponent(userString));
+    }
+
   } catch (error) {
-    console.log("TG USER ERROR:", error);
+    console.log("TG PARSE ERROR:", error);
   }
 
   const data = {
