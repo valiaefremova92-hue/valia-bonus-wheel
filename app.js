@@ -19,16 +19,16 @@ let spinning = false;
 let currentRotation = 0;
 
 const prizes = [
-  { title:"500 грн", subtitle:"на Telegram-бот", code:"bonus_1" },
-  { title:"-15%", subtitle:"на перший бот", code:"bonus_2" },
-  { title:"-10%", subtitle:"на будь-яку послугу", code:"bonus_3" },
-  { title:"Instagram тригер", subtitle:"у подарунок", code:"bonus_4" },
-  { title:"Вітальне повідомлення", subtitle:"безкоштовно", code:"bonus_5" },
-  { title:"Супровід 1 місяць", subtitle:"після запуску", code:"bonus_6" },
-  { title:"Тригер на сторіс", subtitle:"у подарунок", code:"bonus_7" }
+  { title: "500 грн", subtitle: "на Telegram-бот", code: "bonus_1" },
+  { title: "-15%", subtitle: "на перший бот", code: "bonus_2" },
+  { title: "-10%", subtitle: "на будь-яку послугу", code: "bonus_3" },
+  { title: "Instagram тригер", subtitle: "у подарунок", code: "bonus_4" },
+  { title: "Вітальне повідомлення", subtitle: "безкоштовно", code: "bonus_5" },
+  { title: "Супровід 1 місяць", subtitle: "після запуску", code: "bonus_6" },
+  { title: "Тригер на сторіс", subtitle: "у подарунок", code: "bonus_7" }
 ];
 
-spinBtn.onclick = spinWheel;
+spinBtn.addEventListener("click", spinWheel);
 
 function spinWheel() {
   if (spinning) return;
@@ -77,6 +77,9 @@ function spinWheel() {
 }
 
 function saveBonus(prize) {
+  // Показує реальний URL, який відкрив SendPulse
+  alert(window.location.href);
+
   const params = new URLSearchParams(window.location.search);
 
   const data = {
@@ -89,6 +92,8 @@ function saveBonus(prize) {
     date: new Date().toISOString()
   };
 
+  console.log("SEND DATA:", data);
+
   fetch(SCRIPT_URL, {
     method: "POST",
     mode: "no-cors",
@@ -96,10 +101,10 @@ function saveBonus(prize) {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(data)
-  }).catch(error => console.log(error));
+  }).catch(error => console.log("FETCH ERROR:", error));
 }
 
-claimBtn.onclick = function () {
+claimBtn.addEventListener("click", () => {
   overlay.classList.add("hidden");
   window.location.href = BOT_LINK;
-};
+});
