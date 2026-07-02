@@ -80,7 +80,6 @@ function spinWheel() {
     saveBonus(prize);
 
     spinning = false;
-
   }, 6000);
 }
 
@@ -88,17 +87,9 @@ function saveBonus(prize) {
   let user = {};
 
   try {
-    const hash = window.location.hash.replace("#tgWebAppData=", "");
-    const tgParams = new URLSearchParams(hash);
-
-    const userString = tgParams.get("user");
-
-    if (userString) {
-      user = JSON.parse(decodeURIComponent(userString));
-    }
-
+    user = tg?.initDataUnsafe?.user || {};
   } catch (error) {
-    console.log("TG PARSE ERROR:", error);
+    console.log("TG USER ERROR:", error);
   }
 
   const data = {
