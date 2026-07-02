@@ -87,13 +87,18 @@ function saveBonus(prize) {
   let user = {};
 
   try {
-    const hash = window.location.hash.replace("#tgWebAppData=", "");
-    const tgParams = new URLSearchParams(hash);
+    const hash = window.location.hash;
+
+    const tgDataString = decodeURIComponent(
+      hash.replace("#tgWebAppData=", "")
+    );
+
+    const tgParams = new URLSearchParams(tgDataString);
 
     const userString = tgParams.get("user");
 
     if (userString) {
-      user = JSON.parse(decodeURIComponent(userString));
+      user = JSON.parse(userString);
     }
 
   } catch (error) {
