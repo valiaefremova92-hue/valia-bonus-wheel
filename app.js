@@ -77,9 +77,6 @@ function spinWheel() {
 }
 
 function saveBonus(prize) {
-  // Показує реальний URL, який відкрив SendPulse
-  alert(window.location.href);
-
   const params = new URLSearchParams(window.location.search);
 
   const data = {
