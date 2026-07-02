@@ -1,5 +1,5 @@
 const SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbypypR1oRPYKKOu2RVv7TB_aWnjFHPqxS_EVd3TN5lQnu4pMshy9lbS2lHNfjU34Cz6Hw/exec";
+"https://script.google.com/macros/s/AKfycbxDSNvV8KHdXxiCJcZP5fNSTd5Z_9hKRotmboAq1xh6Mqpf9Fs9WqF-aNK2doEMFNqWAw/exec";
 
 const BOT_LINK =
 "https://t.me/valia_botmaker_bot";
@@ -26,13 +26,13 @@ let spinning = false;
 let currentRotation = 0;
 
 const prizes = [
-  { title:"500 грн", subtitle:"на Telegram-бот", code:"bonus_1" },
-  { title:"-15%", subtitle:"на перший бот", code:"bonus_2" },
-  { title:"-10%", subtitle:"на будь-яку послугу", code:"bonus_3" },
-  { title:"Instagram тригер", subtitle:"у подарунок", code:"bonus_4" },
-  { title:"Вітальне повідомлення", subtitle:"безкоштовно", code:"bonus_5" },
-  { title:"Супровід 1 місяць", subtitle:"після запуску", code:"bonus_6" },
-  { title:"Тригер на сторіс", subtitle:"у подарунок", code:"bonus_7" }
+  { title: "500 грн", subtitle: "на Telegram-бот", code: "bonus_1" },
+  { title: "-15%", subtitle: "на перший бот", code: "bonus_2" },
+  { title: "-10%", subtitle: "на будь-яку послугу", code: "bonus_3" },
+  { title: "Instagram тригер", subtitle: "у подарунок", code: "bonus_4" },
+  { title: "Вітальне повідомлення", subtitle: "безкоштовно", code: "bonus_5" },
+  { title: "Супровід 1 місяць", subtitle: "після запуску", code: "bonus_6" },
+  { title: "Тригер на сторіс", subtitle: "у подарунок", code: "bonus_7" }
 ];
 
 spinBtn.onclick = spinWheel;
@@ -84,7 +84,21 @@ function spinWheel() {
 }
 
 function saveBonus(prize) {
-  const user = tg?.initDataUnsafe?.user || {};
+  let user = {};
+
+  try {
+    const hash = window.location.hash.replace("#tgWebAppData=", "");
+    const tgParams = new URLSearchParams(hash);
+
+    const userString = tgParams.get("user");
+
+    if (userString) {
+      user = JSON.parse(decodeURIComponent(userString));
+    }
+
+  } catch (error) {
+    console.log("TG PARSE ERROR:", error);
+  }
 
   const data = {
     telegram_id: user.id || "NO_ID",
