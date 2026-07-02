@@ -4,13 +4,6 @@ const SCRIPT_URL =
 const BOT_LINK =
 "https://t.me/valia_botmaker_bot";
 
-const tg = window.Telegram?.WebApp;
-
-if (tg) {
-  tg.ready();
-  tg.expand();
-}
-
 const wheel = document.querySelector(".wheel-image");
 const spinBtn = document.getElementById("spinBtn");
 const overlay = document.getElementById("overlay");
@@ -84,27 +77,12 @@ function spinWheel() {
 }
 
 function saveBonus(prize) {
- alert(window.location.hash);
-  let user = {};
-
-  try {
-    const hash = window.location.hash.replace("#tgWebAppData=", "");
-    const tgParams = new URLSearchParams(hash);
-
-    const userString = tgParams.get("user");
-
-    if (userString) {
-      user = JSON.parse(decodeURIComponent(userString));
-    }
-
-  } catch (error) {
-    console.log("TG PARSE ERROR:", error);
-  }
+  const params = new URLSearchParams(window.location.search);
 
   const data = {
-    telegram_id: user.id || "NO_ID",
-    username: user.username || "NO_USERNAME",
-    first_name: user.first_name || "NO_NAME",
+    telegram_id: params.get("chat_id") || "NO_ID",
+    username: params.get("username") || "NO_USERNAME",
+    first_name: params.get("name") || "NO_NAME",
     bonus_code: prize.code,
     bonus_title: prize.title,
     bonus_subtitle: prize.subtitle,
@@ -123,10 +101,5 @@ function saveBonus(prize) {
 
 claimBtn.onclick = function () {
   overlay.classList.add("hidden");
-
-  if (tg) {
-    tg.close();
-  } else {
-    window.location.href = BOT_LINK;
-  }
+  window.location.href = BOT_LINK;
 };
