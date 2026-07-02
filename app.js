@@ -111,8 +111,6 @@ function saveBonus(prize) {
     date: new Date().toISOString()
   };
 
-  console.log("SEND DATA:", data);
-
   fetch(SCRIPT_URL, {
     method: "POST",
     mode: "no-cors",
