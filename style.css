@@ -257,6 +257,7 @@ transform:scale(1);
 
 .app{
 padding:20px 14px 55px;
+overflow:hidden;
 }
 
 h1{
@@ -268,35 +269,43 @@ font-size:20px;
 margin-top:15px;
 }
 
-/* колесо більше */
+/* ---------- КОЛЕСО ---------- */
 
 .wheel-wrapper{
-width:470px;
-height:470px;
-max-width:108vw;
-max-height:108vw;
-margin:-12px auto 0;
+position:relative;
+width:340px;
+height:340px;
+max-width:92vw;
+max-height:92vw;
+margin:8px auto 8px;
+display:flex;
+justify-content:center;
+align-items:center;
 }
 
-/* стрілка майже торкається колеса */
+/* ---------- СТРІЛКА ---------- */
 
 .pointer{
-top:20px;
+top:10px;
+left:50%;
+transform:translateX(-50%);
 }
 
-/* центр */
+/* ---------- ЦЕНТР ---------- */
 
 .wheel-center{
-width:92px;
+width:86px;
 }
 
-/* ботик більший */
+/* ---------- БОТИК ---------- */
 
 .mascot{
-width:100px;
-left:-8px;
-bottom:22px;
+width:110px;
+left:-2px;
+bottom:18px;
 }
+
+/* ---------- КНОПКА ---------- */
 
 #spinBtn{
 width:100%;
@@ -304,6 +313,8 @@ font-size:20px;
 padding:16px;
 border-radius:18px;
 }
+
+/* ---------- ТЕКСТ ---------- */
 
 #statusText{
 font-size:18px;
