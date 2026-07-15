@@ -300,9 +300,12 @@ width:86px;
 /* ---------- БОТИК ---------- */
 
 .mascot{
+position:absolute;
 width:110px;
-left:-2px;
-bottom:18px;
+left:-22px;
+bottom:-6px;
+z-index:15;
+pointer-events:none;
 }
 
 /* ---------- КНОПКА ---------- */
