@@ -279,11 +279,7 @@ height:340px;
 max-width:92vw;
 max-height:92vw;
 margin:8px auto 8px;
-display:flex;
-justify-content:center;
-align-items:center;
 }
-
 /* ---------- СТРІЛКА ---------- */
 
 .pointer{
@@ -303,8 +299,8 @@ width:86px;
 .mascot{
 position:absolute;
 width:110px;
-left:-25px;
-bottom:-12px;
+left:-28px;
+bottom:-18px;
 z-index:15;
 pointer-events:none;
 }
