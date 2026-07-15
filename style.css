@@ -27,10 +27,10 @@ margin:0 auto;
 
 .bg-glow{
 position:absolute;
-width:520px;
-height:520px;
+width:620px;
+height:620px;
 background:rgba(255,180,0,.28);
-filter:blur(90px);
+filter:blur(100px);
 border-radius:50%;
 top:170px;
 left:50%;
@@ -61,19 +61,25 @@ color:rgba(255,255,255,.9);
 text-transform:none;
 }
 
-/* Wheel */
+/* =======================
+   WHEEL
+======================= */
 
 .wheel-wrapper{
 position:relative;
-width:500px;
-height:500px;
-margin:5px auto 10px;
+width:560px;
+height:560px;
+max-width:98vw;
+max-height:98vw;
+margin:-10px auto 5px;
 z-index:2;
 }
 
+/* Стрілка */
+
 .pointer{
 position:absolute;
-top:-12px;
+top:28px;
 left:50%;
 transform:translateX(-50%);
 width:0;
@@ -81,9 +87,11 @@ height:0;
 border-left:18px solid transparent;
 border-right:18px solid transparent;
 border-top:36px solid #FFD600;
-z-index:20;
+z-index:30;
 pointer-events:none;
 }
+
+/* Колесо */
 
 .wheel{
 width:100%;
@@ -103,28 +111,34 @@ object-fit:contain;
 pointer-events:none;
 }
 
+/* Центр */
+
 .wheel-center{
 position:absolute;
 left:50%;
 top:50%;
 transform:translate(-50%,-50%);
-width:92px;
+width:98px;
+z-index:20;
+pointer-events:none;
+}
+
+/* =======================
+   ROBOT
+======================= */
+
+.mascot{
+position:absolute;
+width:120px;
+left:-18px;
+bottom:35px;
 z-index:15;
 pointer-events:none;
 }
 
-/* Robot */
-
-.mascot{
-position:absolute;
-width:90px;
-left:-10px;
-bottom:18px;
-z-index:12;
-pointer-events:none;
-}
-
-/* Button */
+/* =======================
+   BUTTON
+======================= */
 
 #spinBtn{
 border:none;
@@ -151,19 +165,23 @@ box-shadow:none;
 cursor:not-allowed;
 }
 
-/* Status */
+/* =======================
+   STATUS
+======================= */
 
 #statusText{
 margin-top:18px;
 font-size:20px;
 font-weight:500;
 color:#fff;
-line-height:1.5;
+line-height:1.55;
 position:relative;
 z-index:2;
 }
 
-/* Popup */
+/* =======================
+   POPUP
+======================= */
 
 .overlay{
 position:fixed;
@@ -232,7 +250,9 @@ transform:scale(1);
 
 }
 
-/* Mobile */
+/* =======================
+   MOBILE
+======================= */
 
 @media(max-width:480px){
 
@@ -249,26 +269,34 @@ font-size:20px;
 margin-top:15px;
 }
 
+/* колесо більше */
+
 .wheel-wrapper{
-width:410px;
-height:410px;
-max-width:95vw;
-max-height:95vw;
-margin:5px auto 10px;
+width:470px;
+height:470px;
+max-width:108vw;
+max-height:108vw;
+margin:-12px auto 0;
 }
+
+/* стрілка майже торкається колеса */
 
 .pointer{
-top:-10px;
+top:20px;
 }
+
+/* центр */
 
 .wheel-center{
-width:80px;
+width:92px;
 }
 
+/* ботик більший */
+
 .mascot{
-width:72px;
-left:-6px;
-bottom:8px;
+width:100px;
+left:-8px;
+bottom:22px;
 }
 
 #spinBtn{
@@ -280,7 +308,7 @@ border-radius:18px;
 
 #statusText{
 font-size:18px;
-line-height:1.45;
+line-height:1.5;
 }
 
 .popup{
