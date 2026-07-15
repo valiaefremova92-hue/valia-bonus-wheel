@@ -128,9 +128,9 @@ pointer-events:none;
 
 .mascot{
 position:absolute;
-width:120px;
-left:-18px;
-bottom:35px;
+width:110px;
+left:-22px;
+bottom:-8px;
 z-index:15;
 pointer-events:none;
 }
