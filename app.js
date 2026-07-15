@@ -76,7 +76,12 @@ function spinWheel() {
       origin: { y: 0.6 }
     });
 
-    statusText.innerText = "🎉 Бонус готовий";
+    statusText.innerHTML = `
+🎉 <strong>Бонус готовий!</strong><br>
+<span style="font-size:16px;opacity:.85;">
+⬇️ Перейдіть у бот для активації
+</span>
+`;
 
     saveBonus(prize);
 
