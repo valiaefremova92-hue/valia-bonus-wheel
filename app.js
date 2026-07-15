@@ -31,9 +31,16 @@ const prizes = [
 spinBtn.addEventListener("click", spinWheel);
 
 function spinWheel() {
+
   if (spinning) return;
 
   spinning = true;
+
+  // одразу блокуємо кнопку
+  spinBtn.disabled = true;
+  spinBtn.style.opacity = "0.6";
+  spinBtn.style.cursor = "default";
+
   statusText.innerText = "🎁 Крутимо барабан...";
 
   const prizeIndex = Math.floor(Math.random() * prizes.length);
@@ -52,6 +59,7 @@ function spinWheel() {
   wheel.style.transform = `rotate(-${currentRotation}deg)`;
 
   setTimeout(() => {
+
     spinSound.pause();
 
     rewardTitle.innerText = "🎉 Ви виграли!";
@@ -72,11 +80,17 @@ function spinWheel() {
 
     saveBonus(prize);
 
+    // міняємо текст кнопки після прокруту
+    spinBtn.innerText = "✅ Спробу використано";
+
     spinning = false;
+
   }, 6000);
+
 }
 
 function saveBonus(prize) {
+
   const params = new URLSearchParams(window.location.search);
 
   const data = {
@@ -99,9 +113,13 @@ function saveBonus(prize) {
     },
     body: JSON.stringify(data)
   }).catch(error => console.log("FETCH ERROR:", error));
+
 }
 
 claimBtn.addEventListener("click", () => {
+
   overlay.classList.add("hidden");
+
   window.location.href = BOT_LINK;
+
 });
