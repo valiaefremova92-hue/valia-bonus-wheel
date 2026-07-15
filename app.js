@@ -1,5 +1,5 @@
 const SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbyRwnKcBk4rPxabkNklpaXx_t26ORgsjwQJghsPa8rnfBCxiN6UBZLfPep_JS3lI0uSIA/exec";
+"https://script.google.com/macros/s/AKfycbw571235rwafuMEEosTHtK4pfinBxLQMalBlLWKnmNISUvlyXSIbae8DqKjOSqOaBVsLw/exec";
 
 const BOT_LINK =
 "https://t.me/valia_botmaker_bot";
