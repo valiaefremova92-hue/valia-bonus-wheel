@@ -25,7 +25,7 @@ const prizes = [
   { title: "Instagram тригер", subtitle: "у подарунок", code: "bonus_4" },
   { title: "Вітальне повідомлення", subtitle: "безкоштовно", code: "bonus_5" },
   { title: "Супровід 1 місяць", subtitle: "після запуску", code: "bonus_6" },
-  { title: "Тригер на сторіс", subtitle: "у подарунок", code: "bonus_7" }
+  { title: "Тригер на reels", subtitle: "у подарунок", code: "bonus_7" }
 ];
 
 spinBtn.addEventListener("click", spinWheel);
